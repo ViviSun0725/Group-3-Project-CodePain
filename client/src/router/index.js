@@ -5,65 +5,74 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "main",
-      component: () => import("../views/MainLayout.vue"),
-      redirect: "/trending",
+      name: "mainLayout",
+      component: () => import("../layouts/MainLayout.vue"),
       children: [
         {
-          path: "search",
-          name: "search",
-          component: () => import("../views/Search.vue"),
-        },
-        {
-          path: "signup",
-          name: "signup",
-          component: () => import("../views/Signup.vue"),
-        },
-        {
-          path: "login",
-          name: "login",
-          component: () => import("../views/Login.vue"),
-        },
-        {
-          path: "search",
-          name: "search",
-          component: () => import("../views/Search.vue"),
-        },
-        {
-          path: "your-work",
-          name: "your-work",
-          component: () => import("../views/YourWork.vue"),
-        },
-        {
-          path: "trending",
-          name: "trending",
-          component: () => import("../views/Trending.vue"),
-        },
-        {
-          path: "/following",
-          name: "following",
-          component: () => import("../views/Following.vue"),
-        },
-        {
-          path: "/profile",
-          name: "profile",
-          component: () => import("../views/Profile.vue"),
-        },
-        {
-          path: "settings",
-          redirect: "profile",
+          path: '',
+          name: "subLayout",
+          component: () => import("../layouts/SubLayout.vue"),
           children: [
             {
-              path: "profile",
-              name: "SettingProfile",
-              component: () => import("../views/SettingProfile.vue"),
+              path: "",
+              redirect: "/trending",
             },
             {
-              path: "account",
-              name: "settingAccount",
-              component: () => import("../views/SettingAccount.vue"),
+              path: "your-work",
+              name: "your-work",
+              component: () => import("../views/YourWork.vue"),
             },
-          ],
+            {
+              path: "following",
+              name: "following",
+              component: () => import("../views/Following.vue"),
+            },
+            {
+              path: "trending",
+              name: "trending",
+              component: () => import("../views/Trending.vue"),
+            },
+            {
+              path: "user/:userId",
+              name: "profile",
+              component: () => import("../views/Profile.vue"),
+            },
+            {
+              path: "search",
+              name: "search",
+              component: () => import("../views/Search.vue"),
+            },
+            {
+              path: "signup",
+              name: "signup",
+              component: () => import("../views/Signup.vue"),
+            },
+            {
+              path: "login",
+              name: "login",
+              component: () => import("../views/Login.vue"),
+            },
+            {
+              path: "settings",
+              component: () => import("../layouts/SettingLayout.vue"),
+              children: [
+                {
+                  path: "",
+                  redirect: "settings/profile"
+                },
+                {
+                  path: "profile",
+                  name: "SettingProfile",
+                  component: () => import("../views/SettingProfile.vue"),
+                },
+                {
+                  path: "account",
+                  name: "settingAccount",
+                  component: () => import("../views/SettingAccount.vue"),
+                },
+              ],
+            },
+          ]
         },
       ],
     },
