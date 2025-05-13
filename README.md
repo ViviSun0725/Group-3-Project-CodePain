@@ -1,6 +1,44 @@
 #新尖兵第三組專題 repo - CodePain
 
-### 開分支步驟
+## 第一次下載請依序至以下資料夾安裝 npm 套件
+
+1. / (專案資料夾根目錄)
+
+```bash
+npm install
+```
+
+2. /client
+
+```bash
+cd client    // 移動至 client 資料夾
+npm install
+```
+
+3. /server
+```bash
+cd ..        // 回上一層
+cd server    // 移動至 server 資料夾
+npm install  
+```
+
+### 執行方式
+
+1. 前端開發
+請至 /client 資料夾
+
+```bash
+cd client
+npm run dev
+```
+
+2. 前端+後端開發
+請至 / 根目錄資料夾
+```bash
+npm run dev
+```
+
+## 開分支步驟
 
 1. 在自己電腦要存專案的父位置 把專案Clone下來
 
@@ -41,7 +79,7 @@ git push origin feature/your-name-task
 
 7. 到 Github 發 PR
 
-### 開發前例行步驟
+## 開發前例行步驟
 
 1. 每次開始開發前先：
 
