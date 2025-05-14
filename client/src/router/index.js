@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import("../layouts/MainLayout.vue"),
       children: [
         {
-          path: '',
+          path: "",
           name: "subLayout",
           component: () => import("../layouts/SubLayout.vue"),
           children: [
@@ -58,7 +58,7 @@ const router = createRouter({
               children: [
                 {
                   path: "",
-                  redirect: "settings/profile"
+                  redirect: "settings/profile",
                 },
                 {
                   path: "profile",
@@ -72,7 +72,7 @@ const router = createRouter({
                 },
               ],
             },
-          ]
+          ],
         },
       ],
     },
