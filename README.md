@@ -104,7 +104,7 @@ git push origin feature/your-name-task
 | 類型                    | 規範                             | 範例                                                           |
 | ----------------------- | -------------------------------- | -------------------------------------------------------------- |
 | Vue 元件命名            | PascalCase（每個單字首字母大寫） | `UserProfile.vue`                                              |
-| CSS / Tailwind 類別命名 | Kebab-case (烤肉串命名)          | `error-message`                                                |
+| CSS / Tailwind 類別命名 | kebab-case (烤肉串命名)          | `error-message`                                                |
 | JavaScript 變數與函式   | camelCase  (小駝峰命名)          | `userToken``handleLogin()`                                     |
 | JavaScript 常數         | UPPER_SNAKE_CASE (大寫蛇式命名)  | `PORT`                                                         |
 | Pinia Store 命名        | snake_case (小寫蛇式命名)        | `defineStore('user_store', { ... })`                           |
