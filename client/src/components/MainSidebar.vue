@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -93,8 +93,10 @@ const Home = () => {
 
 const isSidebarOpen = ref(true);
 
+const emit = defineEmits(["toggleSidebar"]);
 function toggleSidebar() {
 	isSidebarOpen.value = !isSidebarOpen.value;
+	emit("toggle", isSidebarOpen.value);
 }
 </script>
 
