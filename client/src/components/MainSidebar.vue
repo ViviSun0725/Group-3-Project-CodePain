@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<header
-			class="relative top-0 left-0 h-screen transition-all duration-300 bg-[#1E1F26] text-amber-50"
+			class="relative top-0 left-0 h-full transition-all duration-300 bg-[#1E1F26] text-amber-50"
 			:class="{ 'w-[160px]': isSidebarOpen, 'w-0': !isSidebarOpen }"
 		>
-			<div class="absolute top-4 -right-4 z-10">
+			<div class="absolute top-4 -right-4 z-10 h-full">
 				<button
 					@click="toggleSidebar"
 					class="flex items-center justify-center w-4 h-7 bg-[#5A5F73] text-amber-50 rounded-r cursor-pointer fixed translate-x-[-101%]"
@@ -14,7 +14,7 @@
 				</button>
 				<div
 					@click="toggleSidebar"
-					class="inner-sidebar absolute w-3 right-[5px] -top-[15px] h-screen opacity-25 -z-10 cursor-pointer bg-[repeating-linear-gradient(45deg,hsl(226.15deg,12.04%,57.65%),hsl(226.15deg,12.04%,57.65%)_2px,hsl(228deg,12.2%,40.2%)_0,hsl(228deg,12.2%,40.2%)_4px)] hover:opacity-50 hover:transition-opacity hover:duration-700 hover:ease-in-out text-zinc-950"
+					class="inner-sidebar absolute w-3 right-[5px] -top-[15px] h-full opacity-25 -z-10 cursor-pointer bg-[repeating-linear-gradient(45deg,hsl(226.15deg,12.04%,57.65%),hsl(226.15deg,12.04%,57.65%)_2px,hsl(228deg,12.2%,40.2%)_0,hsl(228deg,12.2%,40.2%)_4px)] hover:opacity-50 hover:transition-opacity hover:duration-700 hover:ease-in-out text-zinc-950"
 					:class="{ hidden: isSidebarOpen }"
 				></div>
 			</div>
@@ -106,6 +106,7 @@ header:hover button {
 .inner-sidebar:hover {
 	animation: fadeOut 0.5s ease-in-out infinite;
 }
+
 @keyframes fadeOut {
 	0% {
 		top: -15px;
