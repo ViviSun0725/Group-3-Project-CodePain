@@ -31,7 +31,7 @@
 						></h1>
 					</div>
 				</div>
-				<nav class="" v-if="isLoggedIn">
+				<nav v-if="isLoggedIn">
 					<div class=".flex flex-col py-3 px-4 text-lg text-white bg-[#1e1f26]">
 						<h2
 							class="cursor-pointer text-[9px] pb-3 relative"
@@ -73,6 +73,9 @@
 						</div>
 					</div>
 				</nav>
+				<nav></nav>
+				<!-- button未來加入登入狀態驗證以後可以拔掉 目前模擬登入狀態 -->
+				<button @click="switchLog">切換</button>
 			</div>
 		</header>
 	</div>
@@ -85,6 +88,9 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const isLoggedIn = ref(true);
+const switchLog = () => {
+	isLoggedIn.value = !isLoggedIn.value;
+};
 
 const Yourwork = () => {
 	router.push("/your-work");
