@@ -1,5 +1,5 @@
 <script setup>
-	import { ref } from 'vue';
+  import { ref, onMounted, onUnmounted } from 'vue';
   import Icon from '../assets/icon.svg';
   import Edit from '../assets/edit.svg';
   import Like from '../assets/like.svg';
@@ -9,8 +9,10 @@
   import Layout from '../assets/layout.svg';
   import Bookmark from '../assets/bookmark.svg';
 
-	const isLoggedIn = ref(true)
+  const isLoggedIn = ref(true)
+  
 </script>
+
 <template>
   <nav class="relative h-[65px] w-full bg-black flex items-center justify-between">
     <div class="flex items-center ml-2">
@@ -85,4 +87,14 @@
       </div>
     </div>
   </nav>
+
+  <footer class="h-[30px] w-full flex relative justify-between items-center py-[.2rem] px-[.5rem] bg-[#2C303A] text-white">
+    <div class="flex items-center h-full">
+      <button class="bg-[#43454f] hover:bg-[#5a5f73] py-[3px] px-[7px] text-[12px] leading-[1.2] rounded-xs">Console</button>
+    </div>
+    <div class="flex items-center h-full">
+      <button class="bg-[#43454f] hover:bg-[#ff3c41] py-[3px] px-[7px] text-[12px] leading-[1.2] rounded-xs">Delete</button>
+    </div>
+
+  </footer>
 </template>
