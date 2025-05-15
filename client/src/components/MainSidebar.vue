@@ -31,7 +31,7 @@
 						></h1>
 					</div>
 				</div>
-				<nav class="">
+				<nav class="" v-if="isLoggedIn">
 					<div class=".flex flex-col py-3 px-4 text-lg text-white bg-[#1e1f26]">
 						<h2
 							class="cursor-pointer text-[9px] pb-3 relative"
@@ -51,15 +51,24 @@
 						</ul>
 					</div>
 					<div class="mt-1.5">
-						<div class="p cursor-pointer hover:bg-[#131417]" @click="Yourwork">
+						<div
+							class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
+							@click="Yourwork"
+						>
 							Your Work
 						</div>
 					</div>
 					<div class="mt-1.5">
-						<div class="p cursor-pointer hover:bg-[#131417]" @click="Following">
+						<div
+							class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
+							@click="Following"
+						>
 							Following
 						</div>
-						<div class="p cursor-pointer hover:bg-[#131417]" @click="Trending">
+						<div
+							class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
+							@click="Trending"
+						>
 							Trending
 						</div>
 					</div>
@@ -74,6 +83,8 @@ import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+
+const isLoggedIn = ref(true);
 
 const Yourwork = () => {
 	router.push("/your-work");
@@ -174,10 +185,5 @@ h2:hover::after {
 	100% {
 		background-position: 200px 0;
 	}
-}
-
-.p {
-	padding: 7.25px 15.625px;
-	font-size: 14.41px;
 }
 </style>
