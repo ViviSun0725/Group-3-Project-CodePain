@@ -34,7 +34,7 @@
 				<nav v-if="isLoggedIn">
 					<div class=".flex flex-col py-3 px-4 text-lg text-white bg-[#1e1f26]">
 						<h2
-							class="cursor-pointer text-[9px] pb-3 relative"
+							class="cursor-pointer text-[9px] pb-3 relative create"
 							@click="Yourwork"
 						>
 							CREATE
@@ -73,7 +73,32 @@
 						</div>
 					</div>
 				</nav>
-				<nav></nav>
+				<nav v-if="!isLoggedIn">
+					<div class=".flex flex-col py-3 px-4 text-white bg-[#1e1f26]">
+						<h2 class="text-[9px] pb-2">Try Our Online Editor</h2>
+						<ul
+							class="bg-[#2c303a] font-medium text-left mb-1 block w-full transition duration-200 ease-in-out cursor-pointer rounded-b-md"
+						>
+							<li
+								class="cursor-pointer bg-black py-3 px-3 start text-[17px] text-center"
+								@click="Pen"
+							>
+								Start Coding
+							</li>
+						</ul>
+					</div>
+					<div class="mt-1.5">
+						<div
+							class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
+							@click="Search"
+						>
+							Search Pains
+						</div>
+					</div>
+					<div class="mt-1.5">
+						<div class="text-xl p-3 px-4">組員姓名</div>
+					</div>
+				</nav>
 				<!-- button未來加入登入狀態驗證以後可以拔掉 目前模擬登入狀態 -->
 				<button @click="switchLog">切換</button>
 			</div>
@@ -87,6 +112,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
+// 模擬登入切換狀態
 const isLoggedIn = ref(true);
 const switchLog = () => {
 	isLoggedIn.value = !isLoggedIn.value;
@@ -107,6 +133,9 @@ const Pen = () => {
 const Home = () => {
 	router.push("/");
 };
+const Search = () => {
+	router.push("/search");
+};
 
 const isSidebarOpen = ref(true);
 
@@ -126,21 +155,12 @@ header:hover button {
 	animation: fadeOut 0.5s ease-in-out infinite;
 }
 
-@keyframes fadeOut {
-	0% {
-		top: -15px;
-	}
-	100% {
-		top: -30px;
-	}
-}
-
 h1 {
 	background-image: url(../assets/codepain.png);
 	background-size: contain;
 }
 
-h2:hover {
+.create:hover {
 	background: linear-gradient(
 		90deg,
 		#6495ed,
@@ -158,7 +178,7 @@ h2:hover {
 	animation: rainbow 4s linear infinite;
 }
 
-h2::after {
+.create::after {
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -181,9 +201,37 @@ h2::after {
 	);
 	background-size: 200% auto;
 }
-h2:hover::after {
+.create:hover::after {
 	animation: rainbow 4s linear infinite;
 }
+
+.start {
+	border: 2px solid transparent;
+	border-radius: 6px;
+	border-image: linear-gradient(
+		90deg,
+		#6495ed,
+		#f2c464,
+		#c51077,
+		#34c759,
+		#6495ed,
+		#f2c464,
+		#c51077,
+		#34c759,
+		#6495ed
+	);
+	border-image-slice: 1;
+}
+
+@keyframes fadeOut {
+	0% {
+		top: -15px;
+	}
+	100% {
+		top: -30px;
+	}
+}
+
 @keyframes rainbow {
 	0% {
 		background-position: 0 0;
