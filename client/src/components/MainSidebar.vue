@@ -93,7 +93,7 @@ const Home = () => {
 
 const isSidebarOpen = ref(true);
 
-const emit = defineEmits(["toggleSidebar"]);
+const emit = defineEmits(["toggle"]);
 function toggleSidebar() {
 	isSidebarOpen.value = !isSidebarOpen.value;
 	emit("toggle", isSidebarOpen.value);
