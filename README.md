@@ -94,7 +94,7 @@ git push origin feature/your-name-task
 
    ```bash
    git pull origin dev
-   git merge dev
+   git push origin feature/your-name-task
    # 解完 conflict 再 push，然後開 PR
    ```
 ### 命名規範
@@ -110,7 +110,7 @@ git push origin feature/your-name-task
 | Pinia Store 命名        | snake_case (小寫蛇式命名)        | `defineStore('user_store', { ... })`                           |
 | API 路由命名            | 小寫 + 複數名詞                  | `GET /api/users``POST /api/projects``DELETE /api/messages/:id` |
 | Git 分支命名            | 使用結構：`type/feature-name`    | `feat/login-page` `fix/api-timeout` `refactor/editor-toolbar`  `issue/20`  |
-| Commit 訊息命名    |  參考 Conventional Commit 規範，格式：`<type>: <描述>`    | `feat: 新增註冊功能` `fix: 修正登入 API 回傳錯誤` `docs: 補上 README 命名規範`    |
+| Commit 訊息命名    |  參考 Conventional Commit 規範，格式：`[type]description`    | `feat: 新增註冊功能` `fix: 修正登入 API 回傳錯誤` `docs: 補上 README 命名規範`    |
 
 
 
