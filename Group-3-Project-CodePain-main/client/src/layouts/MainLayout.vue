@@ -1,8 +1,12 @@
 <script setup>
-import MainSidebar from "../components/MainSidebar.vue";
+import SubFooter from '@/components/SubFooter.vue';
 </script>
 
 <template>
-  <MainSidebar />
-  <RouterView />
+
+  <div>
+    <router-view />
+    <SubFooter />
+  </div>
+
 </template>
