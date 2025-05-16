@@ -35,8 +35,8 @@ function toggleSidebar() {
 		"sidebar header"
 		"sidebar content"
 		"sidebar footer";
-	grid-template-rows: 75px 1fr 75px; /* 先寫死表示大概畫面 再自行修正*/
-	height: 100vh;
+	grid-template-rows: 75px 1fr auto; /* 先寫死表示大概畫面 再自行修正*/
+	/* height: 100vh; */
 }
 
 .sidebar {
@@ -49,6 +49,8 @@ function toggleSidebar() {
 
 .content {
 	grid-area: content;
+	overflow-y: auto;
+	min-height: calc(100vh - 75px); /* 75px -> .layout 裡寫死grid裡的第一行row的高度 Kaia把 header 上船之後請把這裡改掉*/
 }
 
 .footer {
