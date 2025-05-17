@@ -9,7 +9,7 @@
   import Layout from '../assets/layout.svg';
   import Bookmark from '../assets/bookmark.svg';
   import close from '../assets/close.svg';
-  import penSetting from './penSetting.vue';
+  import penSetting from '../components/penSetting.vue';
   import EditorSmallButton from '../components/Editor/EditorSmallButton.vue';
 
 	const isLoggedIn = ref(true)
@@ -167,7 +167,7 @@ const stopEdit = () => {
             </div>
           </button>
           <div v-if="saveOptionVisible" class="fixed inset-0 transition-opacity duration-200" @click="toggleSave"></div>
-          <ul v-if="saveOptionVisible" class="absolute flex flex-col rounded-sm top-12 right-0 bg-[#2C303A] text-white w-65 justify-around border-4 border-gray-800 px-5">
+          <ul v-if="saveOptionVisible" class="absolute z-50 flex flex-col rounded-sm top-12 right-0 bg-[#2C303A] text-white w-65 justify-around border-4 border-gray-800 px-5">
             <div class="flex py-2  justify-between border-b border-gray-600">
               <span>Private</span>
               <label class="relative inline-block w-13 h-7 ">
@@ -224,7 +224,7 @@ const stopEdit = () => {
           </div>
         </button>
       <div v-if="layputOptionVisible" class="fixed inset-0 transition-opacity duration-200" @click="toggleLayout"></div>
-        <div v-if="layputOptionVisible" class="absolute bg-[#2C303A] right-0 py-3 rounded-lg border-4">
+        <div v-if="layputOptionVisible" class="absolute z-50 bg-[#2C303A] right-0 py-3 rounded-lg border-4">
           <div  class="px-3 text-white">
             <span>Change View</span>
           </div>
@@ -262,7 +262,7 @@ const stopEdit = () => {
           <div v-if="bookmarkVisible" class="fixed inset-0 transition-opacity duration-200" @click="toggleBookmark"></div>
 
 
-        <ul v-if="bookmarkVisible" class="absolute flex flex-col rounded-sm top-30 left-1/2 -translate-x-1/2 bg-[#2C303A] text-white w-3/4 h-49 justify-between ">
+        <ul v-if="bookmarkVisible" class="absolute z-50 flex flex-col rounded-sm top-30 left-1/2 -translate-x-1/2 bg-[#2C303A] text-white w-3/4 h-49 justify-between ">
         </ul>
       </div>
       <button v-if="!isLoggedIn" type="button" class="text-black rounded px-4 py-2 bg-[#47cf73]">
