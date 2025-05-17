@@ -8,7 +8,6 @@ import Arrow from '../assets/arrow.svg';
 import Settings from '../assets/settings.svg';
 import Layout from '../assets/layout.svg';
 import Bookmark from '../assets/bookmark.svg';
-import CloseBtn from '../assets/closeBtn.svg';
 import penSetting from './penSetting.vue';
 
 const isLoggedIn = ref(true)
@@ -82,13 +81,13 @@ const stopEdit = () => {
     </div>
 
     <div class="flex items-center gap-3 mr-3">
-      <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded px-5 py-2 bg-[#444857]">
+      <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded px-5 py-2 bg-[#444857] hover:bg-[#5A5F73]">
         <div class="h-7 flex">
           <img :src="Like" alt="" class="w-[16px]">
         </div>
       </button>
       <div class="flex">
-        <button type="button" class="text-[aliceblue] rounded-l px-5 py-2 bg-[#444857] mr-[1px]"
+        <button type="button" class="text-[aliceblue] rounded-l px-5 py-2 bg-[#444857] mr-[1px] hover:bg-[#5A5F73]"
           :class="{ 'rounded mr-[10px]': !isLoggedIn }">
           <div class="h-7 flex items-center gap-1">
             <img :src="Cloud" alt="" class="w-[16px]">
@@ -97,15 +96,14 @@ const stopEdit = () => {
         </button>
         <div class="relative ">
           <button v-if="isLoggedIn" @click.prevent="toggleSave" type="button"
-            class="relative text-[aliceblue] rounded-r  py-2 bg-[#444857] flex justify-center items-center w-5">
+            class="relative text-[aliceblue] rounded-r  py-2 bg-[#444857] flex justify-center items-center w-5 hover:bg-[#5A5F73]">
             <div class="h-7 flex justify-center items-center">
               <img :src="Arrow" alt="" class="w-[10px]">
             </div>
           </button>
           <div v-if="saveOptionVisible" class="fixed inset-0 transition-opacity duration-200" @click="toggleSave"></div>
-          <ul v-if="saveOptionVisible"
-            class="absolute flex flex-col rounded-sm top-13 right-0 bg-[#2C303A] text-white w-65 h-49 justify-around border-4 border-gray-800">
-            <div class="flex py-2 px-5 justify-between">
+          <ul v-if="saveOptionVisible" class="absolute flex flex-col rounded-sm top-12 right-0 bg-[#2C303A] text-white w-65 justify-around border-4 border-gray-800 px-5">
+            <div class="flex py-2  justify-between border-b border-gray-600">
               <span>Private</span>
               <label class="relative inline-block w-13 h-7 ">
                 <input type="checkbox" name="" id="" class="opacity-0 w-0 h-0 peer">
@@ -113,7 +111,7 @@ const stopEdit = () => {
                   class="absolute pointer bg-gray-300 top-0 left-0 right-0 bottom-0 rounded-4xl peer-checked:bg-green-400  transition before:content-[''] before:h-8 before:w-8 before:left-0 before:bottom-[-2px] before:bg-white before:transition  before:absolute before:rounded-4xl  peer-checked:before:translate-x-6"></span>
               </label>
             </div>
-            <div class="flex py-2 px-5 justify-between">
+            <div class="flex py-2 justify-between border-b border-gray-600">
               <span>Template</span>
               <label class="relative inline-block w-13 h-7 ">
                 <input type="checkbox" name="" id="" class="opacity-0 w-0 h-0 peer">
@@ -121,7 +119,7 @@ const stopEdit = () => {
                   class="absolute pointer bg-gray-300 top-0 left-0 right-0 bottom-0 rounded-4xl peer-checked:bg-green-400  transition before:content-[''] before:h-8 before:w-8 before:left-0 before:bottom-[-2px] before:bg-white before:transition  before:absolute before:rounded-4xl  peer-checked:before:translate-x-6"></span>
               </label>
             </div>
-            <div class="flex py-2 px-5 justify-between">
+            <div class="flex py-2 justify-between border-b border-gray-600">
               <span>Auto Save</span>
               <label class="relative inline-block w-13 h-7 ">
                 <input type="checkbox" name="" id="" class="opacity-0 w-0 h-0 peer">
@@ -129,7 +127,7 @@ const stopEdit = () => {
                   class="absolute pointer bg-gray-300 top-0 left-0 right-0 bottom-0 rounded-4xl peer-checked:bg-green-400  transition before:content-[''] before:h-8 before:w-8 before:left-0 before:bottom-[-2px] before:bg-white before:transition  before:absolute before:rounded-4xl  peer-checked:before:translate-x-6"></span>
               </label>
             </div>
-            <div class="flex py-2 px-5 justify-between">
+            <div class="flex py-2 justify-between ">
               <span>Format Code on Save</span>
               <label class="relative inline-block w-13 h-7 ">
                 <input type="checkbox" name="" id="" class="opacity-0 w-0 h-0 peer">
@@ -144,7 +142,7 @@ const stopEdit = () => {
 
 
 
-      <button @click.prevent="toggleSetting" type="button" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857]">
+      <button @click.prevent="toggleSetting" type="button" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73]">
         <div class="h-7 flex items-center gap-1">
           <img :src="Settings" alt="" class="w-[16px]">
           <span>Settings</span>
@@ -155,7 +153,7 @@ const stopEdit = () => {
       <penSetting  v-if="settingOptionVisible"  @close="toggleSetting" class="z-50" />
 
       <div class="relative">
-        <button type="button" @click.prevent="toggleLayout" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857]">
+        <button type="button" @click.prevent="toggleLayout" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73]">
           <div class="h-7 flex items-center gap-1">
             <img :src="Layout" alt="" class="w-[14px]" :style="{ transform: `rotate(${selectedLayout.rotation}deg)` }">
           </div>
@@ -185,13 +183,13 @@ const stopEdit = () => {
         </div>
       </div>
       <div class="flex">
-        <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded-l px-4 py-2 bg-[#444857] mr-[1px]">
+        <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded-l px-4 py-2 bg-[#444857] mr-[1px] hover:bg-[#5A5F73]">
           <div class="h-7 flex items-center gap-1">
             <img :src="Bookmark" alt="" class="w-[12px]">
           </div>
         </button>
         <button v-if="isLoggedIn" @click.prevent="toggleBookmark" type="button"
-          class="text-[aliceblue] rounded-r py-2 bg-[#444857] flex justify-center items-center w-[20px]">
+          class="text-[aliceblue] rounded-r py-2 bg-[#444857] flex justify-center items-center w-[20px] hover:bg-[#5A5F73]">
           <div class="h-7 flex justify-center items-center">
             <img :src="Arrow" alt="" class="w-[10px]">
           </div>
@@ -199,38 +197,7 @@ const stopEdit = () => {
           <div v-if="bookmarkVisible" class="fixed inset-0 transition-opacity duration-200" @click="toggleBookmark"></div>
 
         <ul v-if="bookmarkVisible" class="absolute flex flex-col rounded-sm top-30 left-1/2 -translate-x-1/2 bg-[#2C303A] text-white w-3/4 h-49 justify-between ">
-          <div class="flex py-2 px-5 justify-between">
-            <span>Private</span>
-            <label class="relative inline-block w-13 h-7 ">
-              <input type="checkbox" name="" id="" class="opacity-0 w-0 h-0 peer">
-              <span
-                class="absolute pointer bg-gray-300 top-0 left-0 right-0 bottom-0 rounded-4xl peer-checked:bg-green-400  transition before:content-[''] before:h-8 before:w-8 before:left-0 before:bottom-[-2px] before:bg-white before:transition  before:absolute before:rounded-4xl  peer-checked:before:translate-x-6"></span>
-            </label>
-          </div>
-          <div class="flex py-2 px-5 justify-between">
-            <span>Template</span>
-            <label class="relative inline-block w-13 h-7 ">
-              <input type="checkbox" name="" id="" class="opacity-0 w-0 h-0 peer">
-              <span
-                class="absolute pointer bg-gray-300 top-0 left-0 right-0 bottom-0 rounded-4xl peer-checked:bg-green-400  transition before:content-[''] before:h-8 before:w-8 before:left-0 before:bottom-[-2px] before:bg-white before:transition  before:absolute before:rounded-4xl  peer-checked:before:translate-x-6"></span>
-            </label>
-          </div>
-          <div class="flex py-2 px-5 justify-between">
-            <span>Auto Save</span>
-            <label class="relative inline-block w-13 h-7 ">
-              <input type="checkbox" name="" id="" class="opacity-0 w-0 h-0 peer">
-              <span
-                class="absolute pointer bg-gray-300 top-0 left-0 right-0 bottom-0 rounded-4xl peer-checked:bg-green-400  transition before:content-[''] before:h-8 before:w-8 before:left-0 before:bottom-[-2px] before:bg-white before:transition  before:absolute before:rounded-4xl  peer-checked:before:translate-x-6"></span>
-            </label>
-          </div>
-          <div class="flex py-2 px-5 justify-between">
-            <span>Format Code on Save</span>
-            <label class="relative inline-block w-13 h-7 ">
-              <input type="checkbox" name="" id="" class="opacity-0 w-0 h-0 peer">
-              <span
-                class="absolute pointer bg-gray-300 top-0 left-0 right-0 bottom-0 rounded-4xl peer-checked:bg-green-400  transition before:content-[''] before:h-8 before:w-8 before:left-0 before:bottom-[-2px] before:bg-white before:transition  before:absolute before:rounded-4xl  peer-checked:before:translate-x-6"></span>
-            </label>
-          </div>
+          
         </ul>
       </div>
 
