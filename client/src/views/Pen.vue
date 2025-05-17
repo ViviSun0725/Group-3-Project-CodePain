@@ -9,6 +9,8 @@ import Settings from '../assets/settings.svg';
 import Layout from '../assets/layout.svg';
 import Bookmark from '../assets/bookmark.svg';
 import penSetting from './penSetting.vue';
+import EditorSmallButton from '../components/Editor/EditorSmallButton.vue'
+
 
 const isLoggedIn = ref(true)
 const saveOptionVisible = ref(false)
@@ -18,6 +20,12 @@ const title = ref('Title')
 const isEditing = ref(false)
 const settingOptionVisible = ref(false)
 
+
+const isConsoleShow = ref(true)
+
+const handleConsoleShow = ()=> {
+    isConsoleShow.value = !isConsoleShow.value
+  }
 const toggleSave = () => {
   saveOptionVisible.value = !saveOptionVisible.value
 }
@@ -55,6 +63,8 @@ const toggleEdit = () => {
 const stopEdit = () => {
   isEditing.value = false
 }
+
+
 
 </script>
 <template>
@@ -219,4 +229,13 @@ const stopEdit = () => {
     </div>
 
   </nav>
+
+  <footer class="h-8 w-full flex relative justify-between items-center py-[.2rem] px-2 bg-[#2C303A] text-white">
+      <div class="flex items-center h-full">
+        <EditorSmallButton class="hover:bg-[#5a5f73]" @buttonClick="handleConsoleShow">Console</EditorSmallButton>
+      </div>
+      <div class="flex items-center h-full">
+        <EditorSmallButton class="hover:bg-[#ff3c41]">Delete</EditorSmallButton>
+      </div>
+  </footer>
 </template>
