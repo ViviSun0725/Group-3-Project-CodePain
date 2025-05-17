@@ -39,12 +39,12 @@
             <!-- 點擊時顯示選單 -->
         <div
           v-if="searchFocused"
-          class="absolute left-0 mt-2 bg-gray-900 text-white w-full rounded-md shadow-lg border border-gray-700 z-50 flex space-x-2 px-2 py-2"
+          class="absolute left-0 mt-2 bg-gray-900 text-white min-w-full rounded-md shadow-lg border border-gray-700 z-50 flex space-x-2 px-2 py-2"
         >
           <button class="bg-gray-800 px-3 py-1 rounded hover:bg-gray-700">Your Work</button>
           <button class="bg-gray-800 px-3 py-1 rounded hover:bg-gray-700">Pens</button>
-          <button class="bg-gray-800 px-3 py-1 rounded hover:bg-gray-700">Projects</button>
-          <button class="bg-gray-800 px-3 py-1 rounded hover:bg-gray-700">Collections</button>
+          <!-- <button class="bg-gray-800 px-3 py-1 rounded hover:bg-gray-700">Projects</button> --> <!-- Vivi: 留待確認要做專案模式再加上 -->
+          <button class="bg-gray-800 px-3 py-1 rounded hover:bg-gray-700">Collections</button>       <!-- Vivi: 可能會是第二階段要做的功能 所以先保留按鈕 -->
         </div>
       </div>
     </div>
@@ -70,11 +70,12 @@
       <!-- 已登入 -->
       <template v-else>
         <!-- 收藏按鈕 -->
-        <button
+        <!-- Vivi: 我們目前先沒有要做收藏功能 -->
+        <!-- <button
           class="flex items-center justify-center w-12 h-12 bg-gray-800 text-gray-400 hover:text-white rounded-md hover:bg-gray-700 transition-colors duration-200"
         >
           <i class="fas fa-bookmark text-2xl"></i>
-        </button>
+        </button> -->
 
         <!-- 使用者頭像與下拉選單 -->
         <div class="relative" ref="menuRef">
