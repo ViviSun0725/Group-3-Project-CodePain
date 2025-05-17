@@ -13,14 +13,11 @@
   import EditorSmallButton from '../components/Editor/EditorSmallButton.vue';
 
 	const isLoggedIn = ref(true)
-  const isConsoleShow = ref(true)
   const isConsoleDragging = ref(false)
   const consoleHeight = ref(200)  // 預設高度 px
   const previewContainer = ref(null)
 
-  const handleConsoleShow = () => {
-    isConsoleShow.value = !isConsoleShow.value
-  }
+ 
   const handleConsoleClose = () => {
     isConsoleShow.value = false;
   }
@@ -145,6 +142,7 @@ const stopEdit = () => {
 
         </div>
       </div>
+    </div>
 
 
     <div class="flex items-center gap-3 mr-3">
@@ -277,12 +275,6 @@ const stopEdit = () => {
           <span>Log In</span>
         </div>
       </button>
-      <div v-if="isLoggedIn" class="w-[44px] h-[44px] overflow-hidden rounded">
-        <img src="https://fakeimg.pl/300x200/500" class="w-full h-full object-cover" />
-      </div>
-    </div>
-  </nav>
-
         <div v-if="isLoggedIn" class="w-[44px] h-[44px] overflow-hidden mx-1 rounded">
           <img src="https://fakeimg.pl/300x200/500" class="w-full h-full object-cover" />
         </div>
@@ -330,6 +322,5 @@ const stopEdit = () => {
           <EditorSmallButton class="hover:bg-[#ff3c41]">Delete</EditorSmallButton>
         </div>
     </footer>
-  </div>
   
 </template>
