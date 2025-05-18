@@ -7,13 +7,23 @@
       <nav>
         <ul class="text-gray-400 text-lg">
           <li
-            class="cursor-pointer p-1 pl-5 transition-all hover:bg-[#2C303A] hover:border-l-4 hover:border-[#00FF00]"
+            class="cursor-pointer p-1 pl-5 transition-all hover:bg-[#2C303A] hover:border-l-4 hover:border-[#05DF72] hover:text-white"
+            :class="
+              route.path === '/settings/profile'
+                ? 'bg-[#2C303A] border-l-4 border-[#05DF72] text-white'
+                : ''
+            "
             @click="profile"
           >
             Profile
           </li>
           <li
-            class="cursor-pointer p-1 pl-5 transition-all hover:bg-[#2C303A] hover:border-l-4 hover:border-[#00FF00] mt-2"
+            class="cursor-pointer p-1 pl-5 transition-all hover:bg-[#2C303A] hover:border-l-4 hover:border-[#05DF72] hover:text-white"
+            :class="
+              route.path === '/settings/account'
+                ? 'bg-[#2C303A] border-l-4 border-[#05DF72] text-white'
+                : ''
+            "
             @click="account"
           >
             Account
@@ -26,8 +36,9 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
+const route = useRoute();
 
 const profile = () => {
   router.push("/settings/profile");

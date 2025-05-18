@@ -10,5 +10,6 @@ import { RouterLink, RouterView } from "vue-router";
 <style scoped>
 * {
   background-color: #131417;
+  color: white;
 }
 </style>
