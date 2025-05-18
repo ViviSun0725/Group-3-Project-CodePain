@@ -10,3 +10,7 @@
 .editorSmallButton-hover-bgc:hover {
   background-color: #5a5f73;
 }
+
+@theme {
+  --font-archivo: "Archivo Black","sans-serif";
+}
