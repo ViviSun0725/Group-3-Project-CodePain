@@ -12,13 +12,11 @@ watchEffect(() => {
 });
 const activeTab = computed(() => route.params.category || "pens");
 
-const tabs = [
-  { name: "Pens", key: "pens", color: "#0EBEFF" },
-  { name: "Projects", key: "projects", color: "#FFDD40" },
-  { name: "Collections", key: "collections", color: "#AE63E4" },
-];
-
-console.log(typeof activeTab.value);
+const tabColors = {
+  pens: "#0EBEFF",
+  projects: "#FFDD40",
+  collections: "#AE63E4",
+};
 </script>
 <template>
   <main class="bg-[#131417]">
@@ -29,6 +27,9 @@ console.log(typeof activeTab.value);
         <div class="SearchPage_controls_root mb-6">
           <div
             class="SearchPage_control_row flex flex-wrap items-stretch justify-between ps-2 pt-2.5 border-t-4 bg-[#1E1F26] border-t-[#0EBEFF]"
+            :style="{
+              borderTopColor: tabColors[route.params.category] || '#0EBEFF',
+            }"
           >
             <div class="SearchPage_controls_Search_Form w-[300px] h-full mb-2">
               <form
@@ -72,11 +73,13 @@ console.log(typeof activeTab.value);
               <a
                 href="/search/pens?q="
                 class="px-3 py-1 rounded bg-[#4F5465] text-white text-sm hover:bg-[#5A5F73] transition transform active:translate-y-0.5 flex items-center"
+                
               >
                 <svg
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
                   class="fill-current w-3 mr-1.5"
+                  :class="{ 'text-[#0EBEFF]': route.params.category === 'pens' }"
                 >
                   <path
                     d="M0 9.002C0 8.45.455 8 .992 8h18.016c.548 0 .992.456.992 1.002v9.996c0 .553-.455 1.002-.992 1.002H.992C.444 20 0 19.544 0 18.998zm0-8C0 .45.451 0 .99 0h4.02A.99.99 0 0 1 6 1.003v4.994C6 6.551 5.549 7 5.01 7H.99A.99.99 0 0 1 0 5.997zm7 0C7 .45 7.451 0 7.99 0h4.02A.99.99 0 0 1 13 1.003v4.994C13 6.551 12.549 7 12.01 7H7.99A.99.99 0 0 1 7 5.997zm7 0C14 .45 14.451 0 14.99 0h4.02A.99.99 0 0 1 20 1.003v4.994C20 6.551 19.549 7 19.01 7h-4.02A.99.99 0 0 1 14 5.997z"
@@ -92,6 +95,7 @@ console.log(typeof activeTab.value);
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
                   class="fill-current w-3 mr-1.5"
+                  :class="{ 'text-[#FFDD40]': route.params.category === 'projects' }"
                 >
                   <path
                     d="M7 .995C7 .445 7.447 0 7.999 0H19c.552 0 .999.456.999.995v8.01c0 .55-.447.995-.999.995H8C7.447 10 7 9.544 7 9.005zm0 11.003c0-.551.447-.998.999-.998H19c.552 0 .999.446.999.998v7.004c0 .551-.447.998-.999.998H8A.998.998 0 0 1 7 19.002zM0 .992C0 .444.451 0 .99 0h4.02c.546 0 .99.455.99.992v18.016a.996.996 0 0 1-.99.992H.99a.999.999 0 0 1-.99-.992z"
@@ -107,6 +111,7 @@ console.log(typeof activeTab.value);
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
                   class="fill-current w-3 mr-1.5"
+                  :class="{ 'text-[#AE63E4]': route.params.category === 'collections' }"
                 >
                   <rect height="9.64" rx="1" width="9.64" y="10.36"></rect>
                   <rect
