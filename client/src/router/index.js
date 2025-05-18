@@ -59,16 +59,16 @@ const router = createRouter({
           children: [
             {
               path: "",
-              redirect: "settings/profile",
+              redirect: "/settings/profile",
             },
             {
               path: "profile",
-              name: "setting-profile",
+              name: "SettingProfile",
               component: () => import("../views/SettingProfile.vue"),
             },
             {
               path: "account",
-              name: "setting-account",
+              name: "settingAccount",
               component: () => import("../views/SettingAccount.vue"),
             },
           ],
