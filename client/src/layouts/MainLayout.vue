@@ -1,13 +1,13 @@
 <template>
-	<div class="layout" :style="{ gridTemplateColumns: layoutColumns }">
-		<MainSidebar class="sidebar" @toggle="toggleSidebar" />
-		<SubHeader class="header" />
-		<RouterView v-slot="{ Component }">
-			<component :is="Component" class="content" />
-		</RouterView>
-		<SubFooter class="footer" />
-	</div>
-	<!--routerview 內容一定要寫在div class="content"裡面!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 不然會跑掉-->
+  <div class="layout" :style="{ gridTemplateColumns: layoutColumns }">
+    <MainSidebar class="sidebar" @toggle="toggleSidebar" />
+    <SubHeader class="header" />
+    <RouterView v-slot="{ Component }">
+      <component :is="Component" class="content" />
+    </RouterView>
+    <SubFooter class="footer" />
+  </div>
+  <!--routerview 內容一定要寫在div class="content"裡面!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 不然會跑掉-->
 </template>
 
 <script setup>
@@ -19,41 +19,43 @@ import MainSidebar from "../components/MainSidebar.vue";
 
 const isSidebarOpen = ref(true); //預設值是true=打開
 const layoutColumns = computed(() =>
-	isSidebarOpen.value ? "160px 1fr" : "0px 1fr"
+  isSidebarOpen.value ? "160px 1fr" : "0px 1fr"
 );
 
 function toggleSidebar() {
-	//切換true or false
-	isSidebarOpen.value = !isSidebarOpen.value;
+  //切換true or false
+  isSidebarOpen.value = !isSidebarOpen.value;
 }
 </script>
 
 <style scoped>
 .layout {
-	display: grid;
-	grid-template-areas:
-		"sidebar header"
-		"sidebar content"
-		"sidebar footer";
-	grid-template-rows: 75px 1fr auto; /* 先寫死表示大概畫面 再自行修正*/
-	/* height: 100vh; */
+  display: grid;
+  grid-template-areas:
+    "sidebar header"
+    "sidebar content"
+    "sidebar footer";
+  grid-template-rows: 75px 1fr auto; /* 先寫死表示大概畫面 再自行修正*/
+  /* height: 100vh; */
 }
 
 .sidebar {
-	grid-area: sidebar;
+  grid-area: sidebar;
 }
 
 .header {
-	grid-area: header;
+  grid-area: header;
 }
 
 .content {
-	grid-area: content;
-	overflow-y: auto;
-	min-height: calc(100vh - 75px); /* 75px -> .layout 裡寫死grid裡的第一行row的高度 Kaia把 header 上船之後請把這裡改掉*/
+  grid-area: content;
+  overflow-y: auto;
+  min-height: calc(
+    100vh - 75px
+  ); /* 75px -> .layout 裡寫死grid裡的第一行row的高度 Kaia把 header 上船之後請把這裡改掉*/
 }
 
 .footer {
-	grid-area: footer;
+  grid-area: footer;
 }
 </style>
