@@ -70,7 +70,7 @@ console.log(typeof activeTab.value);
                 Your Work
               </a>
               <a
-                href="pens?q="
+                href="/search/pens?q="
                 class="px-3 py-1 rounded bg-[#4F5465] text-white text-sm hover:bg-[#5A5F73] transition transform active:translate-y-0.5 flex items-center"
               >
                 <svg
@@ -85,7 +85,7 @@ console.log(typeof activeTab.value);
                 Pens
               </a>
               <a
-                href="projects?q="
+                href="/search/projects?q="
                 class="px-3 py-1 rounded bg-[#4F5465] text-white text-sm hover:bg-[#5A5F73] transition transform active:translate-y-0.5 flex items-center"
               >
                 <svg
@@ -100,7 +100,7 @@ console.log(typeof activeTab.value);
                 Projects
               </a>
               <a
-                href="collections?q="
+                href="/search/collections?q="
                 class="px-3 py-1 rounded bg-[#4F5465] text-white text-sm hover:bg-[#5A5F73] transition transform active:translate-y-0.5 flex items-center"
               >
                 <svg
