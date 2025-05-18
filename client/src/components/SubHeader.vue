@@ -21,7 +21,7 @@
     </div>
 
     <!-- 中間搜尋欄 -->
-    <div
+    <div v-if="!['search', 'search-category'].includes(route.name)"
       :class="[
         'flex-grow flex px-2',
         isLoggedIn ? 'justify-center' : 'justify-start',
@@ -142,7 +142,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 import { useRouter } from "vue-router";
 const router = useRouter();
