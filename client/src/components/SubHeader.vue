@@ -1,6 +1,6 @@
 <template>
   <header
-    class="bg-black text-white flex items-center justify-between px-4 py-2 relative"
+    class="bg-black text-white flex items-center justify-between px-4 py-2 relative border-b-3 border-b-[#2C303A]"
   >
     <!-- 左側 Tabs（登入後顯示） -->
     <div class="flex items-center">
