@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
+import Arrow from '../assets/arrow.svg';
 
+const title = inject('title')
 const emit = defineEmits(['close'])
 const tabs = [
   { label: 'HTML', key: 'html' },
@@ -17,7 +19,7 @@ const activeTab = ref('html')
 
 </script>
 <template>
-  <div  class="fixed flex flex-col rounded-sm top-30 left-1/2 -translate-x-1/2 bg-[#131417] text-white w-3/5 border-4 border-gray-600  h-2/3" >
+  <div  class="fixed flex flex-col rounded-sm top-30 left-1/2 -translate-x-1/2 bg-[#131417] text-white w-175 border-4 border-gray-600  h-2/3" >
     <div class="mx-4  pt-4">
       <div class="flex justify-between">
         <span class="after:content-[''] after:border-b-2 after:border-green-400 after:absolute after:-bottom-0.5 after:left-0 after:w-full relative pb-1">Pen Settings</span>
