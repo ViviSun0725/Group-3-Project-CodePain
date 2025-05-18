@@ -4,14 +4,28 @@ import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-
+const keyword = ref('');
 const activeTab = computed(() => route.params.category || "pens");
+
+
+
 
 const tabColors = {
   pens: "#0EBEFF",
   projects: "#FFDD40",
   collections: "#AE63E4",
 };
+
+watchEffect(() => {
+  keyword.value = route.query.q || "";
+});
+
+function onSearchSubmit() {
+  router.push({
+    path: "/search/pens",
+    query: { q: keyword.value },
+  });
+}
 </script>
 <template>
   <main class="bg-[#131417]">
@@ -23,13 +37,14 @@ const tabColors = {
           <div
             class="SearchPage_control_row flex flex-wrap items-stretch justify-between ps-2 pt-2.5 border-t-4 bg-[#1E1F26] border-t-[#0EBEFF]"
             :style="{
-              borderTopColor: tabColors[activeTab]
+              borderTopColor: tabColors[activeTab],
             }"
           >
             <div class="SearchPage_controls_Search_Form w-[300px] h-full mb-2">
               <form
                 action=""
                 class="bg-[#444857] focus-within:bg-[#5A5F73] rounded-md"
+                @submit.prevent="onSearchSubmit"
               >
                 <label for="#" class="relative group">
                   <i
@@ -68,7 +83,6 @@ const tabColors = {
               <a
                 href="/search/pens?q="
                 class="px-3 py-1 rounded bg-[#4F5465] text-white text-sm hover:bg-[#5A5F73] transition transform active:translate-y-0.5 flex items-center"
-                
               >
                 <svg
                   viewBox="0 0 20 20"
