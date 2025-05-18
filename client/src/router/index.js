@@ -40,7 +40,7 @@ const router = createRouter({
         },
         {
           path: "search/:category",
-          name: "Search",
+          name: "search-category",
           component: () => import("../views/Search.vue"),
         },
         {
@@ -63,12 +63,12 @@ const router = createRouter({
             },
             {
               path: "profile",
-              name: "SettingProfile",
+              name: "setting-profile",
               component: () => import("../views/SettingProfile.vue"),
             },
             {
               path: "account",
-              name: "settingAccount",
+              name: "setting-account",
               component: () => import("../views/SettingAccount.vue"),
             },
           ],
