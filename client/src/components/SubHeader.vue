@@ -123,7 +123,7 @@
 
               <li class="flex items-center px-4 py-2 hover:bg-gray-700">
                 <i class="fas fa-cog mr-2 w-4 text-gray-400"></i>
-                <span class="cursor-pointer" @click="setting">Settings</span>
+                <span class="cursor-pointer" @click="settings">Settings</span>
               </li>
 
               <li
@@ -146,7 +146,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 
 import { useRouter } from "vue-router";
 const router = useRouter();
-const setting = () => {
+const settings = () => {
   router.push("/settings");
 };
 
