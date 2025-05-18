@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full bg-[#131417] p-6 grid grid-rows-12 gap-8">
+  <div class="h-full w-full bg-[#131417] p-6 grid grid-rows-12">
     <section
       class="grid grid-cols-1 md:grid-cols-[minmax(210px,330px)_1fr] row-span-3 flex-1 mb-8"
     >
@@ -78,8 +78,23 @@
           your portfolio or GitHub profile?
         </p>
       </div>
-      <div class="w-full max-w-160 h-full min-h-16 bg-[#1E1F26] rounded-lg">
-        3
+      <div
+        class="w-full max-w-160 h-full min-h-16 bg-[#1E1F26] rounded-lg flex flex-col justify-center gap-4 p-6"
+      >
+        <div
+          v-for="(link, idx) in profileLinks"
+          :key="idx"
+          class="flex flex-col"
+        >
+          <span class="text-white text-sm">Link #{{ idx + 1 }}</span>
+          <input
+            v-model="profileLinks[idx]"
+            type="text"
+            :placeholder="`連結 ${idx + 1}`"
+            class="w-full px-3 py-2 rounded bg-white text-black border-2 border-gray-600 focus:outline-none focus:border-[#05DF72] transition"
+            maxlength="100"
+          />
+        </div>
       </div>
     </section>
   </div>
@@ -91,6 +106,7 @@ import { ref } from "vue";
 const avatarUrl = ref("");
 const fileInput = ref(null);
 const fileName = ref("");
+const profileLinks = ref(["", "", ""]);
 
 function onAvatarChange(e) {
   const file = e.target.files[0];

@@ -1,7 +1,7 @@
 <template>
   <div class="content flex flex-row mt-3 border-t-3 border-t-[#2C303A]">
     <div
-      class="bg-[#131417] text-white pt-4 w-[180px] border-r-3 border-r-[#2C303A] h-screen"
+      class="bg-[#131417] text-white pt-4 w-[180px] border-r-3 border-r-[#2C303A] h-full"
     >
       <h2 class="text-xl font-bold mb-3 px-3">Settings</h2>
       <nav>
