@@ -16,10 +16,6 @@
   const isConsoleDragging = ref(false);
   const consoleHeight = ref(200);  // 預設高度 px
   const previewContainer = ref(null);
- 
-  const handleConsoleClose = () => {
-    isConsoleShow.value = false;
-  };
 
   const startConsoleDragging = () => {
     isConsoleDragging.value = true
@@ -70,10 +66,13 @@
   const title = ref('Title');
   const isEditing = ref(false);
   const settingOptionVisible = ref(false);
-
   const isConsoleShow = ref(false);
 
-  const handleConsoleShow = ()=> {
+  const handleConsoleClose = () => {
+    isConsoleShow.value = false;
+  };
+
+  const toggleConsole = ()=> {
     isConsoleShow.value = !isConsoleShow.value
   };
   const toggleSave = () => {
@@ -317,7 +316,7 @@
 
     <footer class="h-8 w-full flex relative justify-between items-center py-[.2rem] px-3 bg-[#2C303A] text-white">
         <div class="flex items-center h-full">
-          <EditorSmallButton class="editorSmallButton-hover-bgc" @buttonClick="handleConsoleShow">Console</EditorSmallButton>
+          <EditorSmallButton class="editorSmallButton-hover-bgc" @buttonClick="toggleConsole">Console</EditorSmallButton>
         </div>
         <div class="flex items-center h-full">
           <EditorSmallButton class="hover:bg-[#ff3c41]">Delete</EditorSmallButton>
