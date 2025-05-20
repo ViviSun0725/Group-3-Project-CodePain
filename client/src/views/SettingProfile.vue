@@ -13,11 +13,11 @@
           v-if="avatarUrl"
           :src="avatarUrl"
           alt="Avatar Preview"
-          class="w-28 h-28 object-cover border-2 border-gray-600 rounded"
+          class="w-40 h-40 object-cover border-2 border-gray-600 rounded"
         />
         <div
           v-else
-          class="w-28 h-28 bg-gray-700 flex items-center justify-center text-gray-400 rounded"
+          class="w-40 h-40 bg-gray-700 flex items-center justify-center text-gray-400 rounded"
         >
           無預覽
         </div>
@@ -64,8 +64,39 @@
           Let others know more about you by providing optional information.
         </p>
       </div>
-      <div class="w-full max-w-160 h-full min-h-16 bg-[#1E1F26] rounded-lg">
-        2
+      <div
+        class="w-full max-w-160 h-full min-h-16 bg-[#1E1F26] rounded-lg flex flex-col justify-center gap-4 p-6"
+      >
+        <div class="flex flex-col gap-2">
+          <label class="text-white text-sm">Display Name</label>
+          <input
+            v-model="displayName"
+            type="text"
+            class="w-full px-3 py-2 rounded bg-white text-black border-2 border-gray-600 focus:outline-none focus:border-[#05DF72] transition"
+            maxlength="50"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="text-white text-sm">Location</label>
+          <input
+            v-model="location"
+            type="text"
+            class="w-full px-3 py-2 rounded bg-white text-black border-2 border-gray-600 focus:outline-none focus:border-[#05DF72] transition"
+            maxlength="50"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="text-white text-sm">Bio</label>
+          <textarea
+            v-model="bio"
+            class="w-full px-3 py-2 rounded bg-white text-black border-2 border-gray-600 focus:outline-none focus:border-[#05DF72] transition resize-none"
+            maxlength="100"
+            rows="3"
+          ></textarea>
+          <div class="text-xs text-gray-400 text-right">
+            {{ bio.length }}/100 characters used.
+          </div>
+        </div>
       </div>
     </section>
     <section
@@ -107,6 +138,9 @@ const avatarUrl = ref("");
 const fileInput = ref(null);
 const fileName = ref("");
 const profileLinks = ref(["", "", ""]);
+const displayName = ref("");
+const location = ref("");
+const bio = ref("");
 
 function onAvatarChange(e) {
   const file = e.target.files[0];
