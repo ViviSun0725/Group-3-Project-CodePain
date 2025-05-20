@@ -5,6 +5,8 @@ import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const keyword = ref('');
+const isContent = ref(true)
+
 const activeTab = computed(() => route.params.category || "pens");
 
 
@@ -138,7 +140,22 @@ function onSearchSubmit() {
         </div>
 
         <div class="SearchPage_content">
-          <div
+          <div v-if="isContent" class="SearchPage_result_container ">
+            <div class="SearchPage_result_grid grid [grid-template-columns:repeat(auto-fill,minmax(30%,1fr))] gap-12">
+              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
+              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
+              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
+              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
+              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
+              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
+            </div>
+            <nav class="SearchPage_button_nav flex justify-center align-center mt-20 mb-12">
+              <button class="px-4 py-3 bg-[#444857] hover:bg-[#5A5F73] rounded-sm mr-2">Prev</button>
+              <button class="px-4 py-3 bg-[#444857] hover:bg-[#5A5F73] rounded-sm mr-2">Next</button>
+            </nav>
+          </div>
+          <!-- 空資料訊息 -->
+          <div v-if="!isContent"
             class="SearchPage_message_root max-w-xl p-8 mb-5 mx-auto bg-[#2C303A] text-center rounded"
           >
             <h1 class="mb-2 leading-[1.1] font-archivo text-4xl">Search</h1>
