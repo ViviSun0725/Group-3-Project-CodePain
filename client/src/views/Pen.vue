@@ -150,7 +150,7 @@
     } else if (newHeight <= 100) {
       editorWrapperSize.value = 100
     }
-}
+  }
 
   function stopEditorDrag() {
     isDraggingEditor.value = false
