@@ -1,3 +1,5 @@
 <template>
-    作品卡
+    <div>
+
+    </div>
 </template>
