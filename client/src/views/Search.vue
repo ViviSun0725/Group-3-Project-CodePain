@@ -8,8 +8,6 @@ const keyword = ref('');
 const activeTab = computed(() => route.params.category || "pens");
 
 
-
-
 const tabColors = {
   pens: "#0EBEFF",
   projects: "#FFDD40",
@@ -22,7 +20,7 @@ watchEffect(() => {
 
 function onSearchSubmit() {
   router.push({
-    path: "/search/pens",
+    path: `/search/${route.params.category || "pens"}`,
     query: { q: keyword.value },
   });
 }
