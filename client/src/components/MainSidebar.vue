@@ -101,6 +101,8 @@
         </nav>
         <!-- button未來加入登入狀態驗證以後可以拔掉 目前模擬登入狀態 -->
         <button @click="switchLog">切換</button>
+        <!--先放註冊在這裡 完成後再拔掉-->
+        <button @click="signUp">註冊</button>
       </div>
     </header>
   </div>
@@ -135,6 +137,9 @@ const Home = () => {
 };
 const Search = () => {
   router.push("/search");
+};
+const signUp = () => {
+  router.push("/signup");
 };
 
 const isSidebarOpen = ref(true);
