@@ -122,6 +122,7 @@
   // EditorWrapper拖曳
   let startY = 0
   let initialHeight = 0
+  const editorWrapperRef = ref(null)
   
   function startEditorDrag(e) {
     isDraggingEditor.value = true
@@ -132,24 +133,46 @@
 
   function handleEditorDrag(e) {
     if (!isDraggingEditor.value) return
+    const layoutId = selectedLayout.value.id;
 
-    const deltaY = e.clientY - startY
-    const newHeight = initialHeight + deltaY
+    if (layoutId === 'center') {
+      const deltaY = e.clientY - startY
+      const newHeight = initialHeight + deltaY
+      const mainHeight = mainRef.value ? mainRef.value.getBoundingClientRect().height : window.innerHeight
+      let maxHeight = window.innerHeight
 
-    const mainHeight = mainRef.value ? mainRef.value.getBoundingClientRect().height : window.innerHeight
-    let maxHeight = window.innerHeight
+      if (isConsoleShow.value) {
+        maxHeight = mainHeight - 36 - 16 // console 開時限制
+      }
 
-    if (isConsoleShow.value) {
-      maxHeight = mainHeight - 36 - 16 // console 開時限制
+      if (newHeight > 100 && newHeight < maxHeight) {
+        editorWrapperSize.value = newHeight
+      } else if (newHeight >= maxHeight) {
+        editorWrapperSize.value = maxHeight
+      } else if (newHeight <= 100) {
+        editorWrapperSize.value = 100
+      }
+    } else {
+      const rect = editorWrapperRef.value.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+
+      const newWidth = selectedLayout.value.id === 'left'
+        ? offsetX
+        : rect.width - offsetX;
+
+      editorWrapperSize.value = Math.max(newWidth, 150);
     }
+    // if (isConsoleShow.value) {
+    //   maxHeight = mainHeight - 36 - 16 // console 開時限制
+    // }
 
-    if (newHeight > 100 && newHeight < maxHeight) {
-      editorWrapperSize.value = newHeight
-    } else if (newHeight >= maxHeight) {
-      editorWrapperSize.value = maxHeight
-    } else if (newHeight <= 100) {
-      editorWrapperSize.value = 100
-    }
+    // if (newHeight > 100 && newHeight < maxHeight) {
+    //   editorWrapperSize.value = newHeight
+    // } else if (newHeight >= maxHeight) {
+    //   editorWrapperSize.value = maxHeight
+    // } else if (newHeight <= 100) {
+    //   editorWrapperSize.value = 100
+    // }
   }
 
   function stopEditorDrag() {
@@ -385,6 +408,7 @@
     <main class="flex-1 flex overflow-hidden w-full" :class="selectedLayout.display" ref="mainRef">
       <!-- editor -->
       <div
+        ref="editorWrapperRef"
         class="flex overflow-hidden"
         :style="selectedLayout.id === 'center'
           ? { height: `${editorWrapperSize}px` }
