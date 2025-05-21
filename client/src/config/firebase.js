@@ -3,14 +3,15 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCb_0KS08IdWEWLTOMypoAYmr2ES84hr_0",
-  authDomain: "code-pain.firebaseapp.com",
-  projectId: "code-pain",
-  storageBucket: "code-pain.firebasestorage.app",
-  messagingSenderId: "954374371948",
-  appId: "1:954374371948:web:0edb4d4b59852d8b7cf649",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
-
+// ...existing code...
+console.log("🔥 Firebase API Key:", import.meta.env.VITE_FIREBASE_API_KEY);
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
