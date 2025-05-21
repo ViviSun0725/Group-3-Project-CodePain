@@ -4,11 +4,10 @@ import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-const keyword = ref('');
-const isContent = ref(true)
+const keyword = ref(""); // 與搜尋 input 雙向綁定
+const isContent = ref(true); // 切換有無搜尋結果
 
 const activeTab = computed(() => route.params.category || "pens");
-
 
 const tabColors = {
   pens: "#0EBEFF",
@@ -25,6 +24,41 @@ function onSearchSubmit() {
     path: `/search/${route.params.category || "pens"}`,
     query: { q: keyword.value },
   });
+}
+
+// 1. 模擬搜尋結果（包含20筆假資料物件的陣列）
+const allCards = ref(
+  Array.from({ length: 20 }, (_, i) => ({
+    id: i + 1,
+    title: `Card ${i + 1}`,
+  }))
+);
+
+const itemsPerPage = 6;
+const currentPage = ref(1); // 預設當前葉面為第一頁
+
+// 計算總頁數
+const totalPages = computed(() =>
+  Math.ceil(allCards.value.length / itemsPerPage)
+);
+
+// 目前頁面要顯示的卡片們
+const currentPageCards = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  return allCards.value.slice(start, start + itemsPerPage);
+});
+
+// 換頁方法
+function nextPage() {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
 }
 </script>
 <template>
@@ -140,22 +174,66 @@ function onSearchSubmit() {
         </div>
 
         <div class="SearchPage_content">
-          <div v-if="isContent" class="SearchPage_result_container ">
-            <div class="SearchPage_result_grid grid [grid-template-columns:repeat(auto-fill,minmax(30%,1fr))] gap-12">
+          <!-- 搜尋結果 -->
+          <div v-if="isContent" class="SearchPage_result_container">
+            <div
+              class="SearchPage_result_grid grid [grid-template-columns:repeat(auto-fill,minmax(30%,1fr))] gap-12"
+            >
+              <div
+                v-for="card in currentPageCards"
+                :key="card.id"
+                class="card bg-cyan-500 aspect-[4/3]"
+              >
+                {{ card.title }}
+              </div>
+
+              <!-- <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
               <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
               <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
               <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
               <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
-              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
-              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
+              <div class="card bg-cyan-500 aspect-[4/3]">hello</div> -->
             </div>
-            <nav class="SearchPage_button_nav flex justify-center align-center mt-20 mb-12">
-              <button class="px-4 py-3 bg-[#444857] hover:bg-[#5A5F73] rounded-sm mr-2">Prev</button>
-              <button class="px-4 py-3 bg-[#444857] hover:bg-[#5A5F73] rounded-sm mr-2">Next</button>
+            <nav
+              class="SearchPage_button_nav flex justify-center align-center mt-20 mb-12 gap-3"
+            >
+              <button
+                v-if="currentPage > 1"
+                @click="prevPage"
+                class="px-4 py-3 bg-[#444857] hover:bg-[#5A5F73] rounded-sm flex gap-1"
+              >
+                <svg
+                  viewBox="-100.9 99.1 61.9 105.9"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="fill-current w-2"
+                >
+                  <path
+                    d="m-98.2 158.8 43.5 43.5c1.7 1.7 4 2.7 6.5 2.7s4.8-1 6.5-2.7 2.7-4 2.7-6.5-1-4.8-2.7-6.5l-37.2-37.2 37.2-37.2c1.7-1.7 2.7-4 2.7-6.5s-1-4.8-2.6-6.5c-1.8-1.9-4.2-2.8-6.6-2.8-2.3 0-4.6.9-6.5 2.6-11.5 11.4-41.2 41-43.3 43l-.2.2c-3.6 3.6-3.6 10.3 0 13.9z"
+                  ></path>
+                </svg>
+                Prev
+              </button>
+              <button
+                v-if="currentPage < totalPages"
+                @click="nextPage"
+                class="px-4 py-3 bg-[#444857] hover:bg-[#5A5F73] rounded-sm mr-2 flex gap-1"
+              >
+                Next
+                <svg
+                  viewBox="-100.9 99.1 61.9 105.9"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="fill-current w-2"
+                >
+                  <path
+                    d="m-41.7 145.3-43.5-43.5c-1.7-1.7-4-2.7-6.5-2.7s-4.8 1-6.5 2.7-2.7 4-2.7 6.5 1 4.8 2.7 6.5L-61 152l-37.2 37.2c-1.7 1.7-2.7 4-2.7 6.5s1 4.8 2.6 6.5c1.8 1.9 4.2 2.8 6.6 2.8 2.3 0 4.6-.9 6.5-2.6 11.5-11.4 41.2-41 43.3-43l.2-.2c3.6-3.6 3.6-10.4 0-13.9z"
+                  ></path>
+                </svg>
+              </button>
             </nav>
           </div>
           <!-- 空資料訊息 -->
-          <div v-if="!isContent"
+          <div
+            v-if="!isContent"
             class="SearchPage_message_root max-w-xl p-8 mb-5 mx-auto bg-[#2C303A] text-center rounded"
           >
             <h1 class="mb-2 leading-[1.1] font-archivo text-4xl">Search</h1>
