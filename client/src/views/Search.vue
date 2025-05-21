@@ -4,8 +4,9 @@ import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-const keyword = ref(""); // 與搜尋 input 雙向綁定
-const isContent = ref(true); // 切換有無搜尋結果
+const inputKeyword = ref(""); // 使用者輸入的內容（v-model 綁定 input）
+const searchKeyword = ref(""); // 真的要用來搜尋的關鍵字
+const keyword = computed(() => searchKeyword.value);
 
 const activeTab = computed(() => route.params.category || "pens");
 
@@ -21,45 +22,87 @@ const currentPage = ref(1); // 預設當前頁面為第一頁
 function onSearchSubmit() {
   router.push({
     path: `/search/${route.params.category || "pens"}`,
-    query: { q: keyword.value },
+    query: { q: searchKeyword.value },
   });
+
+  searchKeyword.value = inputKeyword.value; // ✅ 執行搜尋
+  currentPage.value = 1;
 }
 
-// 1. 模擬搜尋結果（包含20筆假資料物件的陣列）
+// 1. 模擬搜尋結果
 
 // TODO：未來改成 cursor-based 自動載入下一頁
 const fakeData = {
-  pens: Array.from({ length: 20 }, (_, i) => ({
-    id: `pen-${i + 1}`,
-    title: `Pen Card ${i + 1}`,
-  })),
-  projects: Array.from({ length: 12 }, (_, i) => ({
-    id: `proj-${i + 1}`,
-    title: `Project ${String.fromCharCode(65 + i)}`,
-  })),
-  collections: Array.from({ length: 7 }, (_, i) => ({
-    id: `coll-${i + 1}`,
-    title: `Collection ${String.fromCharCode(88 + i)}`, // X, Y, Z...
-  })),
+  pens: [
+    { id: "pen-1", title: "CSS Grid Layout" },
+    { id: "pen-2", title: "HTML Button Styles" },
+    { id: "pen-3", title: "JavaScript Timer" },
+    { id: "pen-4", title: "Vue Basics Demo" },
+    { id: "pen-5", title: "TailwindCSS Card" },
+    { id: "pen-6", title: "Form Validation" },
+    { id: "pen-7", title: "CSS Flex Examples" },
+    { id: "pen-8", title: "HTML Table Style" },
+    { id: "pen-9", title: "JS Carousel" },
+    { id: "pen-10", title: "Vue Reactive List" },
+  ],
+  projects: [
+    { id: "proj-1", title: "Portfolio Website" },
+    { id: "proj-2", title: "Vue Weather App" },
+    { id: "proj-3", title: "Blog Platform" },
+    { id: "proj-4", title: "React Task Manager" },
+    { id: "proj-5", title: "Node.js API Server" },
+    { id: "proj-6", title: "E-commerce Dashboard" },
+    { id: "proj-7", title: "Login Auth System" },
+    { id: "proj-8", title: "Interactive Resume" },
+    { id: "proj-9", title: "Chat App with Socket.io" },
+    { id: "proj-10", title: "Markdown Note Editor" },
+    { id: "proj-11", title: "Project Tracker" },
+    { id: "proj-12", title: "Vue 3 + Tailwind Template" },
+  ],
+  collections: [
+    { id: "coll-1", title: "Frontend UI Snippets" },
+    { id: "coll-2", title: "JavaScript Animations" },
+    { id: "coll-3", title: "Vue Component Library" },
+    { id: "coll-4", title: "CSS Framework Demos" },
+    { id: "coll-5", title: "Design Systems" },
+    { id: "coll-6", title: "Favorite Templates" },
+    { id: "coll-7", title: "Weekly Code Picks" },
+    { id: "coll-8", title: "JS One-liners" },
+    { id: "coll-9", title: "Button Hover Effects" },
+    { id: "coll-10", title: "Form Examples" },
+  ],
 };
 const allCards = ref();
 
-watchEffect(() => {
-  keyword.value = route.query.q || "";
-  const category = route.params.category || "pens";
-  allCards.value = fakeData[category] || [];
-  currentPage.value = 1;
+const filteredCards = computed(() => {
+  if (!searchKeyword.value.trim()) return [];
+  const lowerKeyword = searchKeyword.value.toLowerCase();
+  return allCards.value.filter((card) =>
+    card.title.toLowerCase().includes(lowerKeyword)
+  );
 });
 
 // 計算總頁數
 const totalPages = computed(() =>
-  Math.ceil(allCards.value.length / itemsPerPage)
+  Math.ceil(filteredCards.value.length / itemsPerPage)
 );
 
 // 目前頁面要顯示的卡片們
 const currentPageCards = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
-  return allCards.value.slice(start, start + itemsPerPage);
+  return filteredCards.value.slice(start, start + itemsPerPage);
+});
+
+// 有無搜尋結果 (V-if切換訊息)
+const isContent = computed(() => currentPageCards.value.length > 0);
+
+watchEffect(() => {
+  const category = route.params.category || "pens";
+  allCards.value = fakeData[category] || [];
+
+  currentPage.value = 1;
+  inputKeyword.value = route.query.q || "";
+  searchKeyword.value = "";
 });
 
 // 換頁方法
@@ -99,7 +142,7 @@ function prevPage() {
                     class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-gray-200"
                   ></i>
                   <input
-                    v-model="keyword"
+                    v-model="inputKeyword"
                     class="w-full h-full pl-10 pr-4 py-2 placeholder-gray-400 focus:outline-none group-focus-within:placeholder-gray-200"
                     autocomplete="off"
                     placeholder="Search Codecaine..."
