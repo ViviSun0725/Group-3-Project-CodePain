@@ -9,7 +9,7 @@
   import Layout from '../assets/layout.svg';
   import Bookmark from '../assets/bookmark.svg';
   import close from '../assets/close.svg';
-  import penSetting from '../components/penSetting.vue';
+  import penSetting from '../components/Editor/penSetting.vue';
   import EditorSmallButton from '../components/Editor/EditorSmallButton.vue';
 
 	const isLoggedIn = ref(true);
