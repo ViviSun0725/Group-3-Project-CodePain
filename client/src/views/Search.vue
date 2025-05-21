@@ -15,9 +15,8 @@ const tabColors = {
   collections: "#AE63E4",
 };
 
-watchEffect(() => {
-  keyword.value = route.query.q || "";
-});
+const itemsPerPage = 6;
+const currentPage = ref(1); // 預設當前頁面為第一頁
 
 function onSearchSubmit() {
   router.push({
@@ -27,15 +26,30 @@ function onSearchSubmit() {
 }
 
 // 1. 模擬搜尋結果（包含20筆假資料物件的陣列）
-const allCards = ref(
-  Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    title: `Card ${i + 1}`,
-  }))
-);
 
-const itemsPerPage = 6;
-const currentPage = ref(1); // 預設當前葉面為第一頁
+// TODO：未來改成 cursor-based 自動載入下一頁
+const fakeData = {
+  pens: Array.from({ length: 20 }, (_, i) => ({
+    id: `pen-${i + 1}`,
+    title: `Pen Card ${i + 1}`,
+  })),
+  projects: Array.from({ length: 12 }, (_, i) => ({
+    id: `proj-${i + 1}`,
+    title: `Project ${String.fromCharCode(65 + i)}`,
+  })),
+  collections: Array.from({ length: 7 }, (_, i) => ({
+    id: `coll-${i + 1}`,
+    title: `Collection ${String.fromCharCode(88 + i)}`, // X, Y, Z...
+  })),
+};
+const allCards = ref();
+
+watchEffect(() => {
+  keyword.value = route.query.q || "";
+  const category = route.params.category || "pens";
+  allCards.value = fakeData[category] || [];
+  currentPage.value = 1;
+});
 
 // 計算總頁數
 const totalPages = computed(() =>
