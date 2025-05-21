@@ -122,7 +122,7 @@
 
 <template>
   <div class="flex flex-col h-dvh">
-    <nav class="relative h-[65px] w-full bg-black flex items-center justify-between">
+    <nav class="relative md:h-16 h-14 w-full bg-black flex items-center justify-between">
       <div class="flex items-center ml-2">
         <a href="/" class="flex text-0 ">
           <img :src="Icon" alt="" class=" w-9 mb-2 ml-1 mr-2 ">
@@ -145,12 +145,12 @@
       </div>
 
       <div class="flex items-center gap-3 mr-3">
-        <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded px-5 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer">
+        <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded px-3 md:px-5 py-1 md:py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer">
           <div class="h-7 flex">
             <img :src="Like" alt="" class="w-[16px]">
           </div>
         </button>
-        <div class="flex">
+        <div class="md:flex hidden">
           <button type="button" class="text-[aliceblue] rounded-l px-5 py-2 bg-[#444857] mr-[1px] hover:bg-[#5A5F73] hover:cursor-pointer"
             :class="{ 'rounded mr-[10px]': !isLoggedIn }">
             <div class="h-7 flex items-center gap-1">
@@ -205,7 +205,7 @@
             </ul>
           </div>
         </div>
-        <button @click.prevent="toggleSetting" type="button" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer" >
+        <button @click.prevent="toggleSetting" type="button" class="hidden md:flex text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer" >
           <div class="h-7 flex items-center gap-1">
             <img :src="Settings" alt="" class="w-[16px]">
             <span>Settings</span>
@@ -214,7 +214,7 @@
         <div v-if="settingOptionVisible" class="fixed inset-0 bg-black/50 z-40 transition-opacity duration-200" @click="toggleSetting"></div>
         <penSetting v-if="settingOptionVisible"  @close="toggleSetting" class="z-50" />
 
-        <div class="relative">
+        <div class="relative md:flex hidden">
           <button type="button" @click.prevent="toggleLayout" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer">
             <div class="h-7 flex items-center gap-1">
               <img :src="Layout" alt="" class="w-[14px]" :style="{ transform: `rotate(${selectedLayout.rotation}deg)` }">
@@ -245,28 +245,6 @@
               </div>
             </ul>
           </div>
-        </div>
-
-        <div class="flex">
-          <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded-l px-4 py-2 bg-[#444857] mr-[1px] hover:bg-[#5A5F73] hover:cursor-pointer">
-            <div class="h-7 flex items-center gap-1">
-              <img :src="Bookmark" alt="" class="w-[12px]">
-            </div>
-          </button>
-          <button
-            v-if="isLoggedIn" @click.prevent="toggleBookmark" type="button"
-            class="text-[aliceblue] rounded-r py-2 bg-[#444857] flex justify-center items-center w-5 hover:bg-[#5A5F73] hover:cursor-pointer"
-          >
-            <div class="h-7 flex justify-center items-center">
-              <img :src="Arrow" alt="" class="w-[10px]">
-            </div>
-          </button>
-          <div v-if="bookmarkVisible" class="fixed inset-0 transition-opacity duration-200" @click="toggleBookmark"></div>
-
-          <ul
-            v-if="bookmarkVisible" class="absolute z-50 flex flex-col rounded-sm top-30 left-1/2 -translate-x-1/2 bg-[#2C303A] text-white w-175 h-49 justify-between"
-          >
-          </ul>
         </div>
 
         <button v-if="!isLoggedIn" type="button" class="text-black rounded px-4 py-2 bg-[#47cf73] hover:cursor-pointer">
