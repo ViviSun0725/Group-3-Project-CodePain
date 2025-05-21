@@ -1,5 +1,5 @@
 <script setup>
-	import { provide, ref, onMounted, onUnmounted } from 'vue';
+	import { provide, ref, onMounted, onUnmounted, watch } from 'vue';
   import Icon from '../assets/icon.svg';
   import Edit from '../assets/edit.svg';
   import Like from '../assets/like.svg';
@@ -162,17 +162,6 @@
 
       editorWrapperSize.value = Math.max(newWidth, 150);
     }
-    // if (isConsoleShow.value) {
-    //   maxHeight = mainHeight - 36 - 16 // console 開時限制
-    // }
-
-    // if (newHeight > 100 && newHeight < maxHeight) {
-    //   editorWrapperSize.value = newHeight
-    // } else if (newHeight >= maxHeight) {
-    //   editorWrapperSize.value = maxHeight
-    // } else if (newHeight <= 100) {
-    //   editorWrapperSize.value = 100
-    // }
   }
 
   function stopEditorDrag() {
@@ -216,6 +205,17 @@
       sizes.value[index + 1] = newB
     }
   }
+
+  watch(isConsoleShow, (show) => {
+  if (show && selectedLayout.value.id === 'center') {
+    const mainHeight = mainRef.value?.getBoundingClientRect().height || window.innerHeight
+    const maxEditorHeight = mainHeight - 36 - 16  // console 高度預留
+
+    if (editorWrapperSize.value > maxEditorHeight) {
+      editorWrapperSize.value = maxEditorHeight
+    }
+  }
+})
 
   onMounted(() => {
     window.addEventListener('pointermove', handleConsoleDrag)
