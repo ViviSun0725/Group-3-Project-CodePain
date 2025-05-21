@@ -35,46 +35,8 @@
         :css="false"
       >
         <div v-show="showEmailForm" ref="emailSection">
-          <form method="post" action="/accounts/signup/user/free/year">
-            <input type="hidden" name="authenticity_token" value="..." />
-
-            <div class="mb-4">
-              <label
-                for="name"
-                class="block text-sm font-bold text-gray-700 mb-1"
-                >Your Name</label
-              >
-              <input
-                type="text"
-                id="name"
-                name="user[name]"
-                required
-                maxlength="75"
-                class="w-full border border-gray-300 rounded px-3 py-2 text-black bg-gray-200 hover:bg-white transition"
-              />
-            </div>
-
-            <div class="mb-4">
-              <label
-                for="username"
-                class="block text-sm font-bold text-gray-700 mb-1"
-                >Choose a username</label
-              >
-              <input
-                type="text"
-                id="username"
-                name="user[username]"
-                required
-                maxlength="50"
-                pattern="[a-zA-Z0-9-]{2,50}"
-                class="w-full border border-gray-300 rounded px-3 py-2 text-black bg-gray-200 hover:bg-white transition"
-              />
-              <small class="text-gray-500"
-                >codepen.io/<span id="signup-username-preview"
-                  >username</span
-                ></small
-              >
-            </div>
+          <form @submit.prevent="register">
+            <input type="hidden" value="..." />
 
             <div class="mb-4">
               <label
@@ -83,6 +45,7 @@
                 >Email</label
               >
               <input
+                v-model="email"
                 type="email"
                 id="email"
                 name="user[email]"
@@ -99,6 +62,7 @@
                 >Choose Password</label
               >
               <input
+                v-model="password"
                 type="password"
                 id="password"
                 name="user[password]"
@@ -129,38 +93,74 @@
 </template>
 
 <!-- 顯示與動畫 -->
-<script>
-export default {
-  name: "Signup",
-  data() {
-    return {
-      showEmailForm: false,
-    };
-  },
-  methods: {
-    beforeEnter(el) {
-      el.style.height = "0";
-      el.style.opacity = "0";
-    },
-    enter(el, done) {
-      el.style.transition = "all 0.3s ease";
-      const height = el.scrollHeight;
-      el.style.height = height + "px";
-      el.style.opacity = "1";
-      setTimeout(() => {
-        el.style.height = "auto";
-        done();
-      }, 300);
-    },
-    leave(el, done) {
-      el.style.transition = "all 0.3s ease";
-      el.style.height = el.scrollHeight + "px";
-      requestAnimationFrame(() => {
-        el.style.height = "0";
-        el.style.opacity = "0";
-      });
-      setTimeout(done, 300);
-    },
-  },
-};
+<script setup>
+import { ref } from "vue";
+import { auth } from "../config/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const showEmailForm = ref(false);
+const email = ref("");
+const password = ref("");
+const error = ref("");
+const success = ref("");
+
+async function register() {
+  error.value = "";
+  success.value = "";
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+
+    success.value = "註冊成功！";
+    router.push("/login");
+  } catch (e) {
+    let msg = "";
+    switch (e.code) {
+      case "auth/email-already-in-use":
+        msg = "這個 Email 已經被註冊了";
+        break;
+      case "auth/invalid-email":
+        msg = "Email 格式不正確";
+        break;
+      case "auth/password-does-not-meet-requirements":
+        msg = "密碼太弱，請使用至少 8 個字元";
+        break;
+      default:
+        msg = "註冊失敗：" + e.message;
+    }
+    alert(msg);
+  }
+}
+
+function beforeEnter(el) {
+  el.style.height = "0";
+  el.style.opacity = "0";
+}
+
+function enter(el, done) {
+  el.style.transition = "all 0.3s ease";
+  const height = el.scrollHeight;
+  el.style.height = height + "px";
+  el.style.opacity = "1";
+  setTimeout(() => {
+    el.style.height = "auto";
+    done();
+  }, 300);
+}
+
+function leave(el, done) {
+  el.style.transition = "all 0.3s ease";
+  el.style.height = el.scrollHeight + "px";
+  requestAnimationFrame(() => {
+    el.style.height = "0";
+    el.style.opacity = "0";
+  });
+  setTimeout(done, 300);
+}
 </script>
