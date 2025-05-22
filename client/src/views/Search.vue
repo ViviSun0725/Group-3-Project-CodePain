@@ -5,8 +5,10 @@ import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const inputKeyword = ref(""); // 使用者輸入的內容（v-model 綁定 input）
-const searchKeyword = ref(""); // 真的要用來搜尋的關鍵字
+const searchKeyword = ref(""); // 用來搜尋的關鍵字
 const keyword = computed(() => searchKeyword.value);
+const itemsPerPage = 6;
+const currentPage = ref(1); // 預設當前頁面為第一頁
 
 const activeTab = computed(() => route.params.category || "pens");
 
@@ -16,84 +18,222 @@ const tabColors = {
   collections: "#AE63E4",
 };
 
-const itemsPerPage = 6;
-const currentPage = ref(1); // 預設當前頁面為第一頁
-
-function onSearchSubmit() {
-  router.push({
-    path: `/search/${route.params.category || "pens"}`,
-    query: { q: searchKeyword.value },
-  });
-
-  searchKeyword.value = inputKeyword.value; // ✅ 執行搜尋
-  currentPage.value = 1;
-}
-
-// 1. 模擬搜尋結果
-
 // TODO：未來改成 cursor-based 自動載入下一頁
+// 假資料
 const fakeData = {
   pens: [
-    { id: "pen-1", title: "CSS Grid Layout" },
-    { id: "pen-2", title: "HTML Button Styles" },
-    { id: "pen-3", title: "JavaScript Timer" },
-    { id: "pen-4", title: "Vue Basics Demo" },
-    { id: "pen-5", title: "TailwindCSS Card" },
-    { id: "pen-6", title: "Form Validation" },
-    { id: "pen-7", title: "CSS Flex Examples" },
-    { id: "pen-8", title: "HTML Table Style" },
-    { id: "pen-9", title: "JS Carousel" },
-    { id: "pen-10", title: "Vue Reactive List" },
+    {
+      id: "pen-1",
+      title: "CSS Grid Layout",
+      description: "A demo of responsive grid using modern CSS layout.",
+      author: "Alice Nguyen",
+    },
+    {
+      id: "pen-2",
+      title: "HTML Button Styles",
+      description: "Various button designs using pure HTML and CSS.",
+      author: "Bob Chen",
+    },
+    {
+      id: "pen-3",
+      title: "JavaScript Timer",
+      description: "Simple countdown timer built with vanilla JavaScript.",
+      author: "Charlie Wu",
+    },
+    {
+      id: "pen-4",
+      title: "Vue Basics Demo",
+      description: "A basic demo showing Vue 3 reactivity and template usage.",
+      author: "Dora Lin",
+    },
+    {
+      id: "pen-5",
+      title: "TailwindCSS Card",
+      description:
+        "Card UI component styled using Tailwind CSS utility classes.",
+    },
+    {
+      id: "pen-6",
+      title: "Form Validation",
+      description: "Frontend form validation with JavaScript events.",
+    },
+    {
+      id: "pen-7",
+      title: "CSS Flex Examples",
+      description: "Collection of flexbox layout examples with CSS only.",
+    },
+    {
+      id: "pen-8",
+      title: "HTML Table Style",
+      description: "Responsive and styled table using HTML and CSS.",
+    },
+    {
+      id: "pen-9",
+      title: "JS Carousel",
+      description: "A lightweight image slider built with JavaScript.",
+    },
+    {
+      id: "pen-10",
+      title: "Vue Reactive List",
+      description: "Reactive list rendering example in Vue.",
+    },
   ],
   projects: [
-    { id: "proj-1", title: "Portfolio Website" },
-    { id: "proj-2", title: "Vue Weather App" },
-    { id: "proj-3", title: "Blog Platform" },
-    { id: "proj-4", title: "React Task Manager" },
-    { id: "proj-5", title: "Node.js API Server" },
-    { id: "proj-6", title: "E-commerce Dashboard" },
-    { id: "proj-7", title: "Login Auth System" },
-    { id: "proj-8", title: "Interactive Resume" },
-    { id: "proj-9", title: "Chat App with Socket.io" },
-    { id: "proj-10", title: "Markdown Note Editor" },
-    { id: "proj-11", title: "Project Tracker" },
-    { id: "proj-12", title: "Vue 3 + Tailwind Template" },
+    {
+      id: "proj-1",
+      title: "Portfolio Website",
+      description: "Personal portfolio site to showcase projects and skills.",
+    },
+    {
+      id: "proj-2",
+      title: "Vue Weather App",
+      description: "Weather forecast app using Vue and public API.",
+    },
+    {
+      id: "proj-3",
+      title: "Blog Platform",
+      description: "A simple blogging system with Markdown support.",
+    },
+    {
+      id: "proj-4",
+      title: "React Task Manager",
+      description: "To-do list application built with React.",
+    },
+    {
+      id: "proj-5",
+      title: "Node.js API Server",
+      description: "RESTful API backend built with Express and Node.js.",
+    },
+    {
+      id: "proj-6",
+      title: "E-commerce Dashboard",
+      description: "Admin panel to manage orders, users, and products.",
+    },
+    {
+      id: "proj-7",
+      title: "Login Auth System",
+      description: "Authentication system with JWT and session handling.",
+    },
+    {
+      id: "proj-8",
+      title: "Interactive Resume",
+      description: "Resume site with animations and interactive UI.",
+    },
+    {
+      id: "proj-9",
+      title: "Chat App with Socket.io",
+      description: "Real-time chat application with web sockets.",
+    },
+    {
+      id: "proj-10",
+      title: "Markdown Note Editor",
+      description: "Editor to write and preview markdown notes.",
+    },
+    {
+      id: "proj-11",
+      title: "Project Tracker",
+      description: "Kanban-style task tracker with drag-and-drop.",
+    },
+    {
+      id: "proj-12",
+      title: "Vue 3 + Tailwind Template",
+      description: "A starter template using Vue 3 and Tailwind CSS.",
+    },
   ],
   collections: [
-    { id: "coll-1", title: "Frontend UI Snippets" },
-    { id: "coll-2", title: "JavaScript Animations" },
-    { id: "coll-3", title: "Vue Component Library" },
-    { id: "coll-4", title: "CSS Framework Demos" },
-    { id: "coll-5", title: "Design Systems" },
-    { id: "coll-6", title: "Favorite Templates" },
-    { id: "coll-7", title: "Weekly Code Picks" },
-    { id: "coll-8", title: "JS One-liners" },
-    { id: "coll-9", title: "Button Hover Effects" },
-    { id: "coll-10", title: "Form Examples" },
+    {
+      id: "coll-1",
+      title: "Frontend UI Snippets",
+      description: "A collection of reusable HTML/CSS UI patterns.",
+    },
+    {
+      id: "coll-2",
+      title: "JavaScript Animations",
+      description: "Snippets for DOM-based animations with JS.",
+    },
+    {
+      id: "coll-3",
+      title: "Vue Component Library",
+      description: "Commonly used Vue 3 components in one place.",
+    },
+    {
+      id: "coll-4",
+      title: "CSS Framework Demos",
+      description: "Examples using Tailwind, Bootstrap, and more.",
+    },
+    {
+      id: "coll-5",
+      title: "Design Systems",
+      description: "Shared design principles, styles, and tokens.",
+    },
+    {
+      id: "coll-6",
+      title: "Favorite Templates",
+      description: "Handpicked templates for projects and portfolios.",
+    },
+    {
+      id: "coll-7",
+      title: "Weekly Code Picks",
+      description: "Interesting pens, projects, and patterns this week.",
+    },
+    {
+      id: "coll-8",
+      title: "JS One-liners",
+      description: "Useful single-line JavaScript utilities.",
+    },
+    {
+      id: "coll-9",
+      title: "Button Hover Effects",
+      description: "Creative hover styles for buttons.",
+    },
+    {
+      id: "coll-10",
+      title: "Form Examples",
+      description: "Collection of login, signup, and contact form UIs.",
+    },
   ],
 };
+
 const allCards = ref();
 
+// 搜尋結果
 const filteredCards = computed(() => {
   if (!searchKeyword.value.trim()) return [];
-  const lowerKeyword = searchKeyword.value.toLowerCase();
-  return allCards.value.filter((card) =>
-    card.title.toLowerCase().includes(lowerKeyword)
-  );
+  const keywords = searchKeyword.value.trim().toLowerCase().split(/\s+/);
+
+  console.log();
+  return allCards.value.filter((card) => {
+    const title = card.title.toLowerCase(); 
+    const description = card.description?.toLowerCase() || "";
+    return keywords.some(
+      (keyword) => title.includes(keyword) || description.includes(keyword)
+    );
+  });
 });
+
+function onSearchSubmit() {
+  console.log(inputKeyword.value);
+  currentPage.value = 1;
+  searchKeyword.value = inputKeyword.value; //  執行搜尋
+  searchKeyword.value = searchKeyword.value.toLowerCase();
+  router.push({
+    path: `/search/${route.params.category || "pens"}`,
+    query: { q: inputKeyword.value },
+  });
+}
 
 // 計算總頁數
 const totalPages = computed(() =>
   Math.ceil(filteredCards.value.length / itemsPerPage)
 );
 
-// 目前頁面要顯示的卡片們
+// 目前頁面要顯示的卡片
 const currentPageCards = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   return filteredCards.value.slice(start, start + itemsPerPage);
 });
 
-// 有無搜尋結果 (V-if切換訊息)
+// 有無搜尋結果 (v-if v-else-if 切換訊息)
 const isContent = computed(() => currentPageCards.value.length > 0);
 
 const isEmptySearchResult = computed(() => {
@@ -104,9 +244,11 @@ watchEffect(() => {
   const category = route.params.category || "pens";
   allCards.value = fakeData[category] || [];
 
+  if (route.query.q !== undefined) {
+    inputKeyword.value = route.query.q;
+    searchKeyword.value = route.query.q;
+  }
   currentPage.value = 1;
-  inputKeyword.value = route.query.q || "";
-  searchKeyword.value = "";
 });
 
 // 換頁方法
@@ -240,20 +382,15 @@ function prevPage() {
             <div
               class="SearchPage_result_grid grid [grid-template-columns:repeat(auto-fill,minmax(30%,1fr))] gap-12"
             >
+              <!-- 作品卡 -->
               <div
                 v-for="card in currentPageCards"
                 :key="card.id"
                 class="card bg-cyan-500 aspect-[4/3]"
               >
-                {{ card.title }}
+                <div>{{ card.title }}</div>
+                <div>{{ card.description }}</div>
               </div>
-
-              <!-- <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
-              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
-              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
-              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
-              <div class="card bg-cyan-500 aspect-[4/3]">hello</div>
-              <div class="card bg-cyan-500 aspect-[4/3]">hello</div> -->
             </div>
             <nav
               class="SearchPage_button_nav flex justify-center align-center mt-20 mb-12 gap-3"
