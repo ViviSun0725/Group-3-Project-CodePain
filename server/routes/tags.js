@@ -1,7 +1,7 @@
 import { Router } from "express";
 import db from "../db/index.js";
 import { pensTable, tagsTable, penTagsTable } from "../db/schema.js";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 const router = Router();
 
@@ -38,7 +38,7 @@ router.get("/:tagName", async (req, res) => {
   const pens = await db
     .select()
     .from(pensTable)
-    .where(pensTable.id.in(penIds));
+    .where(inArray(pensTable.id, penIds));
 
   res.json(pens);
 });
