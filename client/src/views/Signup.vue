@@ -118,6 +118,7 @@ async function register() {
 		);
 
 		success.value = "註冊成功！";
+		alert(success.value); //alert最後可以再調整美觀的樣式
 		router.push("/login");
 	} catch (e) {
 		let msg = "";
