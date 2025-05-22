@@ -96,6 +96,10 @@ const currentPageCards = computed(() => {
 // 有無搜尋結果 (V-if切換訊息)
 const isContent = computed(() => currentPageCards.value.length > 0);
 
+const isEmptySearchResult = computed(() => {
+  return searchKeyword.value.trim() !== "" && filteredCards.value.length === 0;
+});
+
 watchEffect(() => {
   const category = route.params.category || "pens";
   allCards.value = fakeData[category] || [];
@@ -288,14 +292,26 @@ function prevPage() {
               </button>
             </nav>
           </div>
-          <!-- 空資料訊息 -->
+          <!-- 搜尋前提示 -->
           <div
-            v-if="!isContent"
+            v-else-if="searchKeyword === ''"
             class="SearchPage_message_root max-w-xl p-8 mb-5 mx-auto bg-[#2C303A] text-center rounded"
           >
             <h1 class="mb-2 leading-[1.1] font-archivo text-4xl">Search</h1>
             <p>
               Enter a search term above to find for Codecaines or Collections.
+            </p>
+          </div>
+          <!-- 搜尋結果為空的提示 -->
+          <div
+            v-else-if="isEmptySearchResult"
+            class="SearchPage_message_root max-w-xl p-8 mb-5 mx-auto bg-[#2C303A] text-center rounded"
+          >
+            <h1 class="mb-2 leading-[1.1] font-archivo text-4xl">No Results</h1>
+            <p>
+              Sorry, we couldn’t find any results matching “{{
+                searchKeyword
+              }}”.
             </p>
           </div>
         </div>
