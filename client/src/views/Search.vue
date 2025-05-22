@@ -1,14 +1,14 @@
 <script setup>
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watchEffect, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
 const inputKeyword = ref(""); // 使用者輸入的內容（v-model 綁定 input）
 const searchKeyword = ref(""); // 用來搜尋的關鍵字
-const keyword = computed(() => searchKeyword.value);
 const itemsPerPage = 6;
 const currentPage = ref(1); // 預設當前頁面為第一頁
+const allCards = ref();
 
 const activeTab = computed(() => route.params.category || "pens");
 
@@ -194,28 +194,36 @@ const fakeData = {
   ],
 };
 
-const allCards = ref();
+
+// 初次載入時觸發搜尋
+onMounted(() => {
+  const q = route.query.q || "";
+  searchKeyword.value = q;
+});
 
 // 搜尋結果
 const filteredCards = computed(() => {
   if (!searchKeyword.value.trim()) return [];
   const keywords = searchKeyword.value.trim().toLowerCase().split(/\s+/);
 
-  console.log();
   return allCards.value.filter((card) => {
     const title = card.title.toLowerCase(); 
     const description = card.description?.toLowerCase() || "";
-    return keywords.some(
-      (keyword) => title.includes(keyword) || description.includes(keyword)
+    const author = card.author?.toLowerCase() || ""
+    return keywords.every(
+      (keyword) => title.includes(keyword) || description.includes(keyword) || author.includes(keyword)
     );
   });
 });
 
-function onSearchSubmit() {
+const onSearchSubmit = () => {
   console.log(inputKeyword.value);
   currentPage.value = 1;
-  searchKeyword.value = inputKeyword.value; //  執行搜尋
-  searchKeyword.value = searchKeyword.value.toLowerCase();
+
+  // searchKeyword.value = inputKeyword.value; //  執行搜尋
+  // searchKeyword.value = searchKeyword.value.toLowerCase();
+  searchKeyword.value = inputKeyword.value.toLowerCase();
+
   router.push({
     path: `/search/${route.params.category || "pens"}`,
     query: { q: inputKeyword.value },
