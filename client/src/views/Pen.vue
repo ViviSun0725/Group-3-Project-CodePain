@@ -315,13 +315,13 @@
       </div>
 
       <div class="flex items-center gap-2 mr-3">
-        <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded px-3 md:px-5 py-1 md:py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer">
+        <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded px-3 md:px-5 py-1 md:py-2 bg-[#444857] editorSmallButton-hover-bgc:hover  hover:cursor-pointer">
           <div class="h-7 flex">
             <img :src="Like" alt="" class="w-4">
           </div>
         </button>
         <div class="md:flex hidden">
-          <button type="button" class="text-[aliceblue] rounded-l px-5 py-2 bg-[#444857] mr-[1px] hover:bg-[#5A5F73] hover:cursor-pointer"
+          <button type="button" class="text-[aliceblue] rounded-l px-5 py-2 bg-[#444857] mr-[1px] editorSmallButton-hover-bgc:hover  hover:cursor-pointer"
             :class="{ 'rounded mr-[2px]': !isLoggedIn }">
             <div class="h-7 flex items-center gap-1">
               <img :src="Cloud" alt="" class="w-4">
@@ -330,9 +330,9 @@
           </button>
           <div class="relative ">
             <button v-if="isLoggedIn" @click.prevent="toggleSave" type="button"
-              class="relative text-[aliceblue] rounded-r  py-2 bg-[#444857] flex justify-center items-center w-5 hover:bg-[#5A5F73] hover:cursor-pointer">
+              class="relative text-[aliceblue] rounded-r  py-2 bg-[#444857] flex justify-center items-center w-5 editorSmallButton-hover-bgc:hover  hover:cursor-pointer">
               <div class="h-7 flex justify-center items-center">
-                <img :src="Arrow" alt="" class="w-[10px]">
+                <img :src="Arrow" alt="" class="w-2.5">
               </div>
             </button>
             <div v-if="saveOptionVisible" class="fixed inset-0 transition-opacity duration-200" @click="toggleSave"></div>
@@ -376,7 +376,7 @@
           </div>
         </div>
         <div v-if="navListVisible" class="fixed inset-0 z-40 transition-opacity duration-200" @click="toggleList"></div>
-        <button @click.prevent="toggleList" type="button" class="flex md:hidden text-[aliceblue] rounded px-2 py-1 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer" >
+        <button @click.prevent="toggleList" type="button" class="flex md:hidden text-[aliceblue] rounded px-2 py-1 bg-[#444857] editorSmallButton-hover-bgc:hover  hover:cursor-pointer" >
           <div class="h-7 flex justify-between w-6 items-center">
             <div class="transition-transform h-0.5 bg-gray-200 relative before:content-[''] before:w-1.5 before:h-0.5 before:bg-gray-200 before:absolute before:-top-1.5 before:left-0 after:content-[''] after:w-3.5 after:h-0.5 after:bg-gray-200 after:absolute after:-bottom-1.5 after:left-0" :class="navListVisible ? 'before:w-2 w-1.5' : 'before:w-1.5 w-2.5'"></div>
             <img :src="ArrowWhite" alt="" class=" transition-transform	w-3 self-start mt-1.5 " :class=" {'scale-y-[-1]':navListVisible}">
@@ -393,7 +393,7 @@
           </button>
           <div class="w-full bg-gray-700 h-[1px] mb-4"></div>
         </div>
-        <button @click.prevent="toggleSetting" type="button" class="hidden md:flex text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer" >
+        <button @click.prevent="toggleSetting" type="button" class="hidden md:flex text-[aliceblue] rounded px-4 py-2 bg-[#444857] editorSmallButton-hover-bgc:hover  hover:cursor-pointer" >
           <div class="h-7 flex items-center gap-1">
             <img :src="Settings" alt="" class="w-4">
             <span>Settings</span>
@@ -403,7 +403,7 @@
         <penSetting v-if="settingOptionVisible"  @close="toggleSetting" class="z-50" />
 
         <div class="relative md:flex hidden">
-          <button type="button" @click.prevent="toggleLayout" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer">
+          <button type="button" @click.prevent="toggleLayout" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] editorSmallButton-hover-bgc:hover  hover:cursor-pointer">
             <div class="h-7 flex items-center gap-1">
               <img :src="Layout" alt="" class="w-[14px]" :style="{ transform: `rotate(${selectedLayout.rotation}deg)` }">
             </div>
@@ -416,7 +416,7 @@
             <div class="flex justify-center align-middle py-3">
               <div class="flex justify-center align-middle py-3 ">
                 <label
-                  v-for="option in layoutOptions" :key="option.id" class="border-2 border-[#444857] w-20 flex justify-center h-12 hover:bg-[#5A5F73]  hover:cursor-pointer" :class="{ 'rounded-l-sm': option.id === 'left', 'rounded-r-sm': option.id === 'right', 'bg-[#444857]': selectedLayout.id === option.id }"
+                  v-for="option in layoutOptions" :key="option.id" class="border-2 border-[#444857] w-20 flex justify-center h-12 editorSmallButton-hover-bgc:hover   hover:cursor-pointer" :class="{ 'rounded-l-sm': option.id === 'left', 'rounded-r-sm': option.id === 'right', 'bg-[#444857]': selectedLayout.id === option.id }"
                 >
                   <button @click="selectLayout(option) " class=" hover:cursor-pointer">
                     <img :src="Layout" :style="{ transform: `rotate(${option.rotation}deg)` }" class="w-5 "  alt="">
@@ -475,10 +475,10 @@
             </h2>
             <div class="h-full flex items-center gap-2 px-3">
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="Settings" alt="setting button" class="w-[10px] h-[10px]">
+                <img :src="Settings" alt="setting button" class="w-2.5 h-2.5">
               </EditorSmallButton>
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="ArrowWhite" alt="other button" class="w-[10px] h-[10px]">
+                <img :src="ArrowWhite" alt="other button" class="w-2.5 h-2.5">
               </EditorSmallButton>
             </div>
           </div>
@@ -502,10 +502,10 @@
             </h2>
             <div class="h-full flex items-center gap-2 px-3">
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="Settings" alt="setting button" class="w-[10px] h-[10px]">
+                <img :src="Settings" alt="setting button" class="w-2.5 h-2.5">
               </EditorSmallButton>
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="ArrowWhite" alt="other button" class="w-[10px] h-[10px]">
+                <img :src="ArrowWhite" alt="other button" class="w-2.5 h-2.5">
               </EditorSmallButton>
             </div>
           </div>
@@ -529,10 +529,10 @@
             </h2>
             <div class="h-full flex items-center gap-2 px-3">
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="Settings" alt="setting button" class="w-[10px] h-[10px]">
+                <img :src="Settings" alt="setting button" class="w-2.5 h-2.5">
               </EditorSmallButton>
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="ArrowWhite" alt="other button" class="w-[10px] h-[10px]">
+                <img :src="ArrowWhite" alt="other button" class="w-2.5 h-2.5">
               </EditorSmallButton>
             </div>
           </div>
@@ -563,7 +563,7 @@
             <div class="flex gap-1">
               <EditorSmallButton class="editorSmallButton-hover-bgc">Clear</EditorSmallButton>
               <EditorSmallButton class="editorSmallButton-hover-bgc" @buttonClick="handleConsoleClose">
-                <img :src="Close" alt="close button" class="w-[10px] h-[10px]">
+                <img :src="Close" alt="close button" class="w-2.5 h-2.5">
               </EditorSmallButton>
             </div>
           </div>
