@@ -49,7 +49,6 @@ export const useWorkStore = defineStore('work', () => {
   const currentWork = computed(() => {
     if(currentId.value.length) {
       return works.value.filter((work) => {
-        console.log(work);
         return work.id === currentId.value
       })
     } else {
