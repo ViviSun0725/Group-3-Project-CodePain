@@ -5,17 +5,18 @@
   import Like from '../assets/like.svg';
   import Cloud from '../assets/cloud.svg';
   import Arrow from '../assets/arrow.svg';
+  import ArrowWhite from '../assets/arrow-white.svg';
   import Settings from '../assets/settings.svg';
   import Layout from '../assets/layout.svg';
-  import Bookmark from '../assets/bookmark.svg';
   import close from '../assets/close.svg';
   import penSetting from '../components/Editor/penSetting.vue';
   import EditorSmallButton from '../components/Editor/EditorSmallButton.vue';
 
-	const isLoggedIn = ref(true);
+	const isLoggedIn = ref(false);
   const isConsoleDragging = ref(false);
   const consoleHeight = ref(200);  // 預設高度 px
   const previewContainer = ref(null);
+  const navListVisible = ref(false);
 
 
 
@@ -89,9 +90,10 @@
   const toggleSetting = () => {
     settingOptionVisible.value = !settingOptionVisible.value
   };
-  const toggleBookmark = () => {
-    bookmarkVisible.value = !bookmarkVisible.value
+  const toggleList = () => {
+    navListVisible.value = !navListVisible.value
   };
+
 
   const layoutOptions = [
     { id: 'left', rotation: -90 },
@@ -144,17 +146,17 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-3 mr-3">
+      <div class="flex items-center gap-2 mr-3">
         <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded px-3 md:px-5 py-1 md:py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer">
           <div class="h-7 flex">
-            <img :src="Like" alt="" class="w-[16px]">
+            <img :src="Like" alt="" class="w-4">
           </div>
         </button>
         <div class="md:flex hidden">
           <button type="button" class="text-[aliceblue] rounded-l px-5 py-2 bg-[#444857] mr-[1px] hover:bg-[#5A5F73] hover:cursor-pointer"
-            :class="{ 'rounded mr-[10px]': !isLoggedIn }">
+            :class="{ 'rounded mr-[2px]': !isLoggedIn }">
             <div class="h-7 flex items-center gap-1">
-              <img :src="Cloud" alt="" class="w-[16px]">
+              <img :src="Cloud" alt="" class="w-4">
               <span>Save</span>
             </div>
           </button>
@@ -205,9 +207,27 @@
             </ul>
           </div>
         </div>
+        <div v-if="navListVisible" class="fixed inset-0 z-40 transition-opacity duration-200" @click="toggleList"></div>
+        <button @click.prevent="toggleList" type="button" class="flex md:hidden text-[aliceblue] rounded px-2 py-1 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer" >
+          <div class="h-7 flex justify-between w-6 items-center">
+            <div class="transition-transform h-0.5 bg-gray-200 relative before:content-[''] before:w-1.5 before:h-0.5 before:bg-gray-200 before:absolute before:-top-1.5 before:left-0 after:content-[''] after:w-3.5 after:h-0.5 after:bg-gray-200 after:absolute after:-bottom-1.5 after:left-0" :class="navListVisible ? 'before:w-2 w-1.5' : 'before:w-1.5 w-2.5'"></div>
+            <img :src="ArrowWhite" alt="" class=" transition-transform	w-3 self-start mt-1.5 " :class=" {'scale-y-[-1]':navListVisible}">
+          </div>
+        </button>
+        <div v-if="navListVisible" class="z-50 absolute flex flex-col top-14 right-0 w-55 gap-1 py-1 bg-[#1E1F26] rounded-sm">
+          <button class="flex w-full px-2 py-1 hover:bg-gray-500">
+            <img :src="Cloud" alt="" class="w-4">
+            <span>Save</span>
+          </button>
+          <button @click.prevent="toggleSetting" class="flex w-full px-2 py-1 hover:bg-gray-500">
+            <img :src="Settings" alt="" class="w-4">
+            <span>Settings</span>
+          </button>
+          <div class="w-full bg-gray-700 h-[1px] mb-4"></div>
+        </div>
         <button @click.prevent="toggleSetting" type="button" class="hidden md:flex text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer" >
           <div class="h-7 flex items-center gap-1">
-            <img :src="Settings" alt="" class="w-[16px]">
+            <img :src="Settings" alt="" class="w-4">
             <span>Settings</span>
           </div>
         </button>
@@ -247,17 +267,17 @@
           </div>
         </div>
 
-        <button v-if="!isLoggedIn" type="button" class="text-black rounded px-4 py-2 bg-[#47cf73] hover:cursor-pointer">
+        <button v-if="!isLoggedIn" type="button" class="text-black rounded px-2 py-1 md:px-4 md:py-2 bg-[#47cf73] hover:cursor-pointer">
           <div class="h-7 flex items-center gap-1">
             <span>Sign Up</span>
           </div>
         </button>
-        <button v-if="!isLoggedIn" type="button" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:cursor-pointer">
+        <button v-if="!isLoggedIn" type="button" class="text-[aliceblue] rounded px-2 py-1 md:px-4 md:py-2 bg-[#444857] hover:cursor-pointer">
           <div class="h-7 flex items-center gap-1">
             <span>Log In</span>
           </div>
         </button>
-        <div v-if="isLoggedIn" class="w-[44px] h-[44px] overflow-hidden mx-1 rounded hover:cursor-pointer">
+        <div v-if="isLoggedIn" class="w-9 h-9 md:w-11 md:h-11 overflow-hidden mx-1 rounded hover:cursor-pointer">
           <img src="https://fakeimg.pl/300x200/500" class="w-full h-full object-cover" />
         </div>
       </div>
