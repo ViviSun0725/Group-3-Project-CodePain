@@ -101,6 +101,20 @@
 				</nav>
 				<!--先放註冊在這裡 完成後再拔掉-->
 				<button @click="signUp">註冊</button>
+				<button
+					@click="callApi"
+					class="mt-4 w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+				>
+					呼叫後端 API
+				</button>
+				<li
+					class="flex items-center px-4 py-2 hover:bg-red-600 text-red-400 cursor-pointer"
+					@click="handleLogout"
+				>
+					<i class="fas fa-sign-out-alt mr-2 w-4 cur"></i>
+					<span>Log Out</span>
+				</li>
+				<!--提醒自己測試用的btn-->
 			</div>
 		</header>
 	</div>
@@ -145,6 +159,32 @@ function toggleSidebar() {
 	isSidebarOpen.value = !isSidebarOpen.value;
 	emit("toggle", isSidebarOpen.value);
 }
+//測試用
+import axios from "axios";
+
+async function callApi() {
+	if (!authStore.idToken) {
+		error.value = "請先登入取得 token";
+		return;
+	}
+
+	try {
+		const res = await axios.get("http://localhost:3000/api/test", {
+			headers: {
+				Authorization: `Bearer ${authStore.idToken}`,
+			},
+		});
+
+		console.log("後端回應：", res.data);
+	} catch (e) {
+		error.value = `API 呼叫失敗：${e.response?.data?.error || e.message}`;
+		console.error(e);
+	}
+}
+const handleLogout = () => {
+	authStore.clearToken();
+	router.push("/");
+};
 </script>
 
 <style scoped>

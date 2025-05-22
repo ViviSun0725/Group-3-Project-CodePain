@@ -32,44 +32,38 @@
 				</button>
 			</form>
 
-			<div v-if="idToken" class="mt-6 bg-gray-100 p-4 rounded text-sm">
+			<div
+				v-if="authStore.idToken"
+				class="mt-6 bg-gray-100 p-4 rounded text-sm"
+			>
 				<h3 class="font-semibold mb-2 text-black">JWT Token:</h3>
-				<pre class="overflow-x-auto text-black">{{ idToken }}</pre>
+				<pre class="overflow-x-auto text-black">{{ authStore.idToken }}</pre>
 			</div>
 			<div
 				class="mt-6 bg-gray-100 p-4 rounded text-sm text-black"
-				v-if="idToken"
+				v-if="authStore.idToken"
 			>
 				已登錄
 			</div>
-
 			<p v-if="error" class="text-red-500 mt-4">{{ error }}</p>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useAuthStore } from "../stores/useAuthStore";
+import axios from "axios";
 
 const email = ref("");
 const password = ref("");
-const idToken = ref("");
 const error = ref("");
 const authStore = useAuthStore();
 
-onMounted(() => {
-	const savedToken = localStorage.getItem("idToken");
-	if (savedToken) {
-		idToken.value = savedToken;
-	}
-});
-
 async function login() {
 	error.value = "";
-	idToken.value = "";
 
 	try {
 		const userCredential = await signInWithEmailAndPassword(
@@ -80,7 +74,6 @@ async function login() {
 
 		const user = userCredential.user;
 		const token = await user.getIdToken(); // 拿到 JWT
-		idToken.value = token;
 		authStore.setToken(token);
 		console.log("登入成功，JWT:", token);
 	} catch (e) {

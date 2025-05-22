@@ -92,5 +92,5 @@ router.beforeEach((to, from, next) => {
 		return next("/");
 	}
 	next();
-}); //進入signup後 codepne原生是500頁面 可以再做調整
+}); //進入signup後 codepne是500頁面 可以再做調整
 export default router;
