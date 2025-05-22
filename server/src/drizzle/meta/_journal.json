@@ -8,6 +8,13 @@
       "when": 1747896886096,
       "tag": "0000_left_bloodaxe",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1747932518204,
+      "tag": "0001_nosy_mister_sinister",
+      "breakpoints": true
     }
   ]
 }
