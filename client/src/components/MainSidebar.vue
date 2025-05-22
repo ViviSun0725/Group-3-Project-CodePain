@@ -1,257 +1,253 @@
 <template>
-  <div>
-    <header
-      class="relative top-0 left-0 h-full transition-all duration-300 bg-[#1E1F26] text-amber-50"
-      :class="{ 'w-[160px]': isSidebarOpen, 'w-0': !isSidebarOpen }"
-    >
-      <div class="absolute top-4 -right-4 z-10 h-full">
-        <button
-          @click="toggleSidebar"
-          class="flex items-center justify-center w-4 h-7 bg-[#5A5F73] text-amber-50 rounded-r cursor-pointer fixed translate-x-[-101%]"
-          :class="{ 'opacity-0': isSidebarOpen }"
-        >
-          <span :class="{ 'rotate-180': isSidebarOpen }">➤</span>
-        </button>
-        <div
-          @click="toggleSidebar"
-          class="inner-sidebar absolute w-3 right-[5px] -top-[15px] h-full opacity-25 -z-10 cursor-pointer bg-[repeating-linear-gradient(45deg,hsl(226.15deg,12.04%,57.65%),hsl(226.15deg,12.04%,57.65%)_2px,hsl(228deg,12.2%,40.2%)_0,hsl(228deg,12.2%,40.2%)_4px)] hover:opacity-50 hover:transition-opacity hover:duration-700 hover:ease-in-out text-zinc-950"
-          :class="{ hidden: isSidebarOpen }"
-        ></div>
-      </div>
+	<div>
+		<header
+			class="relative top-0 left-0 h-full transition-all duration-300 bg-[#1E1F26] text-amber-50"
+			:class="{ 'w-[160px]': isSidebarOpen, 'w-0': !isSidebarOpen }"
+		>
+			<div class="absolute top-4 -right-4 z-10 h-full">
+				<button
+					@click="toggleSidebar"
+					class="flex items-center justify-center w-4 h-7 bg-[#5A5F73] text-amber-50 rounded-r cursor-pointer fixed translate-x-[-101%]"
+					:class="{ 'opacity-0': isSidebarOpen }"
+				>
+					<span :class="{ 'rotate-180': isSidebarOpen }">➤</span>
+				</button>
+				<div
+					@click="toggleSidebar"
+					class="inner-sidebar absolute w-3 right-[5px] -top-[15px] h-full opacity-25 -z-10 cursor-pointer bg-[repeating-linear-gradient(45deg,hsl(226.15deg,12.04%,57.65%),hsl(226.15deg,12.04%,57.65%)_2px,hsl(228deg,12.2%,40.2%)_0,hsl(228deg,12.2%,40.2%)_4px)] hover:opacity-50 hover:transition-opacity hover:duration-700 hover:ease-in-out text-zinc-950"
+					:class="{ hidden: isSidebarOpen }"
+				></div>
+			</div>
 
-      <div
-        class="h-full overflow-y-auto overflow-x-hidden"
-        :class="{ hidden: !isSidebarOpen }"
-      >
-        <div>
-          <div class=".img { w-full h-12 px-3 relative justify-center }">
-            <h1
-              class="cursor-pointer bg-center bg-no-repeat w-full h-full"
-              @click="Home"
-            ></h1>
-          </div>
-        </div>
-        <nav v-if="isLoggedIn">
-          <div class=".flex flex-col py-3 px-4 text-lg text-white bg-[#1e1f26]">
-            <h2
-              class="cursor-pointer text-[9px] pb-3 relative create"
-              @click="Yourwork"
-            >
-              CREATE
-            </h2>
-            <ul
-              class="bg-[#2c303a] font-medium text-lg text-left mb-1 block w-full transition duration-200 ease-in-out cursor-pointer rounded-b-md"
-            >
-              <li
-                class="cursor-pointer hover:bg-[#131417] p-3 px-4"
-                @click="Pen"
-              >
-                ✏️ Pain
-              </li>
-            </ul>
-          </div>
-          <div class="mt-1.5">
-            <div
-              class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
-              @click="Yourwork"
-            >
-              Your Work
-            </div>
-          </div>
-          <div class="mt-1.5">
-            <div
-              class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
-              @click="Following"
-            >
-              Following
-            </div>
-            <div
-              class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
-              @click="Trending"
-            >
-              Trending
-            </div>
-          </div>
-        </nav>
-        <nav v-if="!isLoggedIn">
-          <div class=".flex flex-col py-3 px-4 text-white bg-[#1e1f26]">
-            <h2 class="text-[9px] pb-2">Try Our Online Editor</h2>
-            <ul
-              class="bg-[#2c303a] font-medium text-left mb-1 block w-full transition duration-200 ease-in-out cursor-pointer rounded-b-md"
-            >
-              <li
-                class="cursor-pointer bg-black start text-center"
-                @click="Pen"
-              >
-                <span class="bg-black block px-3 py-3">Start Coding</span>
-              </li>
-            </ul>
-          </div>
-          <div class="mt-1.5">
-            <div
-              class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
-              @click="Search"
-            >
-              Search Pains
-            </div>
-          </div>
-          <div class="mt-1.5">
-            <div class="text-xl p-3 px-4">組員姓名</div>
-          </div>
-        </nav>
-        <!-- button未來加入登入狀態驗證以後可以拔掉 目前模擬登入狀態 -->
-        <button @click="switchLog">切換</button>
-        <!--先放註冊在這裡 完成後再拔掉-->
-        <button @click="signUp">註冊</button>
-      </div>
-    </header>
-  </div>
+			<div
+				class="h-full overflow-y-auto overflow-x-hidden"
+				:class="{ hidden: !isSidebarOpen }"
+			>
+				<div>
+					<div class=".img { w-full h-12 px-3 relative justify-center }">
+						<h1
+							class="cursor-pointer bg-center bg-no-repeat w-full h-full"
+							@click="Home"
+						></h1>
+					</div>
+				</div>
+				<nav v-if="authStore.idToken">
+					<div class=".flex flex-col py-3 px-4 text-lg text-white bg-[#1e1f26]">
+						<h2
+							class="cursor-pointer text-[9px] pb-3 relative create"
+							@click="Yourwork"
+						>
+							CREATE
+						</h2>
+						<ul
+							class="bg-[#2c303a] font-medium text-lg text-left mb-1 block w-full transition duration-200 ease-in-out cursor-pointer rounded-b-md"
+						>
+							<li
+								class="cursor-pointer hover:bg-[#131417] p-3 px-4"
+								@click="Pen"
+							>
+								✏️ Pain
+							</li>
+						</ul>
+					</div>
+					<div class="mt-1.5">
+						<div
+							class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
+							@click="Yourwork"
+						>
+							Your Work
+						</div>
+					</div>
+					<div class="mt-1.5">
+						<div
+							class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
+							@click="Following"
+						>
+							Following
+						</div>
+						<div
+							class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
+							@click="Trending"
+						>
+							Trending
+						</div>
+					</div>
+				</nav>
+				<nav v-if="!authStore.idToken">
+					<div class=".flex flex-col py-3 px-4 text-white bg-[#1e1f26]">
+						<h2 class="text-[9px] pb-2">Try Our Online Editor</h2>
+						<ul
+							class="bg-[#2c303a] font-medium text-left mb-1 block w-full transition duration-200 ease-in-out cursor-pointer rounded-b-md"
+						>
+							<li
+								class="cursor-pointer bg-black start text-center"
+								@click="Pen"
+							>
+								<span class="bg-black block px-3 py-3">Start Coding</span>
+							</li>
+						</ul>
+					</div>
+					<div class="mt-1.5">
+						<div
+							class="text-xl p-3 px-4 cursor-pointer hover:bg-[#131417]"
+							@click="Search"
+						>
+							Search Pains
+						</div>
+					</div>
+					<div class="mt-1.5">
+						<div class="text-xl p-3 px-4">組員姓名</div>
+					</div>
+				</nav>
+				<!--先放註冊在這裡 完成後再拔掉-->
+				<button @click="signUp">註冊</button>
+			</div>
+		</header>
+	</div>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/useAuthStore";
+const authStore = useAuthStore();
 
 const router = useRouter();
 
 // 模擬登入切換狀態
-const isLoggedIn = ref(true);
-const switchLog = () => {
-  isLoggedIn.value = !isLoggedIn.value;
-};
 
 const Yourwork = () => {
-  router.push("/your-work");
+	router.push("/your-work");
 };
 const Following = () => {
-  router.push("/following");
+	router.push("/following");
 };
 const Trending = () => {
-  router.push("/trending");
+	router.push("/trending");
 };
 const Pen = () => {
-  router.push("/pen");
+	router.push("/pen");
 };
 const Home = () => {
-  router.push("/");
+	router.push("/");
 };
 const Search = () => {
-  router.push("/search");
+	router.push("/search");
 };
 const signUp = () => {
-  router.push("/signup");
+	router.push("/signup");
 };
 
 const isSidebarOpen = ref(true);
 
 const emit = defineEmits(["toggle"]);
 function toggleSidebar() {
-  isSidebarOpen.value = !isSidebarOpen.value;
-  emit("toggle", isSidebarOpen.value);
+	isSidebarOpen.value = !isSidebarOpen.value;
+	emit("toggle", isSidebarOpen.value);
 }
 </script>
 
 <style scoped>
 header:hover button {
-  opacity: 1;
-  transition: 0.5s ease-in-out;
+	opacity: 1;
+	transition: 0.5s ease-in-out;
 }
 .inner-sidebar:hover {
-  animation: fadeOut 0.5s ease-in-out infinite;
+	animation: fadeOut 0.5s ease-in-out infinite;
 }
 
 h1 {
-  background-image: url(../assets/codepain.png);
-  background-size: contain;
+	background-image: url(../assets/codepain.png);
+	background-size: contain;
 }
 
 .create:hover {
-  background: linear-gradient(
-    90deg,
-    #6495ed,
-    #f2c464,
-    #c51077,
-    #34c759,
-    #6495ed,
-    #f2c464,
-    #c51077,
-    #34c759,
-    #6495ed
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbow 4s linear infinite;
+	background: linear-gradient(
+		90deg,
+		#6495ed,
+		#f2c464,
+		#c51077,
+		#34c759,
+		#6495ed,
+		#f2c464,
+		#c51077,
+		#34c759,
+		#6495ed
+	);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: rainbow 4s linear infinite;
 }
 
 .create::after {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  content: "";
-  height: 3px;
-  border-radius: 5px 5px 0 0;
-  z-index: 1;
-  background-image: linear-gradient(
-    90deg,
-    #4567b7,
-    #f7dc6f,
-    #9c3f8f,
-    #34c759,
-    #4567b7,
-    #f7dc6f,
-    #9c3f8f,
-    #34c759,
-    #4567b7
-  );
-  background-size: 200% auto;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	content: "";
+	height: 3px;
+	border-radius: 5px 5px 0 0;
+	z-index: 1;
+	background-image: linear-gradient(
+		90deg,
+		#4567b7,
+		#f7dc6f,
+		#9c3f8f,
+		#34c759,
+		#4567b7,
+		#f7dc6f,
+		#9c3f8f,
+		#34c759,
+		#4567b7
+	);
+	background-size: 200% auto;
 }
 .create:hover::after {
-  animation: rainbow 4s linear infinite;
+	animation: rainbow 4s linear infinite;
 }
 
 .start {
-  border: 2px solid transparent;
-  border-top: 3px solid transparent;
-  border-bottom: 3px solid transparent;
-  border-radius: 6px;
-  background: linear-gradient(
-    115deg,
-    #4fcf70,
-    #fad648,
-    #a767e5,
-    #12bcfe,
-    #44ce7b
-  );
+	border: 2px solid transparent;
+	border-top: 3px solid transparent;
+	border-bottom: 3px solid transparent;
+	border-radius: 6px;
+	background: linear-gradient(
+		115deg,
+		#4fcf70,
+		#fad648,
+		#a767e5,
+		#12bcfe,
+		#44ce7b
+	);
 }
 .start:hover {
-  animation: rainbowLogout 2.5s linear infinite;
+	animation: rainbowLogout 2.5s linear infinite;
 }
 
 @keyframes fadeOut {
-  0% {
-    top: -15px;
-  }
-  100% {
-    top: -30px;
-  }
+	0% {
+		top: -15px;
+	}
+	100% {
+		top: -30px;
+	}
 }
 
 @keyframes rainbow {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 200px 0;
-  }
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 200px 0;
+	}
 }
 
 @keyframes rainbowLogout {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: -200px 0;
-  }
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: -200px 0;
+	}
 }
 </style>
