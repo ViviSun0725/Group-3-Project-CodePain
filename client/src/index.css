@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --font-archivo: "Archivo Black","sans-serif";
+}
+
 .editor-bgc{
   background-color: #1C1C1C;
 }
@@ -11,6 +15,6 @@
   background-color: #5a5f73;
 }
 
-@theme {
-  --font-archivo: "Archivo Black","sans-serif";
+.editor-resizer-border-color {
+  border-color: #2D2D2D;
 }
