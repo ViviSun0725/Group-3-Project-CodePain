@@ -1,5 +1,5 @@
 <script setup>
-	import { provide, ref, onMounted, onUnmounted, watch, computed } from 'vue';
+	import { provide, ref, onMounted, onUnmounted, watch, computed, toRefs } from 'vue';
   import Icon from '../assets/icon.svg';
   import Edit from '../assets/edit.svg';
   import Like from '../assets/like.svg';
@@ -17,6 +17,7 @@
   import penSetting from '../components/penSetting.vue';
   import EditorSmallButton from '../components/Editor/EditorSmallButton.vue';
   import Editor from '@/components/Editor/Editor.vue';
+  import EditorPreview from '@/components/Editor/EditorPreview.vue';
 
   import { storeToRefs } from 'pinia'
   import { useWorkStore } from '@/stores/workStore';
@@ -24,7 +25,7 @@
   const workStore = useWorkStore()
   const { updateCurrentCode }= workStore;
   const { currentWork } = storeToRefs(workStore);
-  const { html, css, javascript } = currentWork.value[0]
+  const { html, css, javascript, isAutoPreview } = toRefs(currentWork.value[0])
 	
 	const isLoggedIn = ref(true);
   const saveOptionVisible = ref(false);
@@ -511,8 +512,9 @@
       ></div>
       <!-- preview -->
       <div class="flex-1 overflow-hidden flex flex-col bg-white" ref="previewContainer">
-        <div class="overflow-auto flex-1">
+        <div class="overflow-auto flex-none">
           <!-- Preview iframe -->
+          <EditorPreview :html="html" :css="css" :javascript="javascript" :isAutoPreview="isAutoPreview" class="shrink min-w-0 min-h-0"/>
         </div>
         <div v-show="isConsoleShow">
           <div
@@ -535,6 +537,7 @@
             class="h-16 editor-bgc"
             :style="{ height: `${consoleHeight}px` }"
           >
+          
           </div>
         </div>
         
