@@ -15,6 +15,13 @@
       "when": 1747932518204,
       "tag": "0001_nosy_mister_sinister",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1747963886667,
+      "tag": "0002_brave_lilith",
+      "breakpoints": true
     }
   ]
 }
