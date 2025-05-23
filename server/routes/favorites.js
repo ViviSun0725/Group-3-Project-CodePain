@@ -1,7 +1,7 @@
 import { Router } from "express";
 import db from "../db/index.js";
 import { favoritesTable, pensTable } from "../db/schema.js";
-import { eq, and } from "drizzle-orm";
+import { eq, and,  inArray } from "drizzle-orm";
 import { requireAuth } from "../middleware/auth.js";
 
 const router = Router();
@@ -56,7 +56,7 @@ router.get("/:user_id", async (req, res) => {
   const pens = await db
     .select()
     .from(pensTable)
-    .where(pensTable.id.in(penIds));
+    .where(inArray(pensTable.id, penIds));
 
   res.json(pens);
 });

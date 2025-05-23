@@ -35,7 +35,7 @@ const pensTable = pgTable("pens", {
   css_code: text("css_code"),
   js_code: text("js_code"),
   title: varchar("title", { length: 100 }).notNull(),
-  description: text().notNull(),
+  description: text(), // 刪除 description 的 not null設定
   is_private: boolean("is_private").default(false),
   created_at: timestamp().defaultNow(),
 });
@@ -99,7 +99,7 @@ const penTagsTable = pgTable(
   "pen_tags",
   {
     pen_id: integer("pen_id")
-      .references(() => pensTable.id)
+      .references(() => pensTable.id, { onDelete: "cascade" }) 
       .notNull(),
     tag_id: integer("tag_id")
       .references(() => tagsTable.id)
