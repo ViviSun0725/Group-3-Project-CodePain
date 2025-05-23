@@ -80,6 +80,11 @@ const router = createRouter({
       name: "pen",
       component: () => import("../views/Pen.vue"),
     },
+     {
+       path: "/penCard", // 這就是你要測試的網址
+       name: "penCard",
+       component: () => import("../views/PenCardPage.vue")
+     },
   ],
 });
 
