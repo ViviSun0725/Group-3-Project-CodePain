@@ -1,6 +1,6 @@
 <script setup>
 import { inject, ref } from 'vue';
-import Arrow from '../assets/arrow.svg';
+import Arrow from '../../assets/arrow.svg';
 
 const title = inject('title')
 const emit = defineEmits(['close'])
@@ -19,8 +19,9 @@ const activeTab = ref('html')
 
 </script>
 <template>
-  <div  class="fixed flex flex-col rounded-sm top-30 left-1/2 -translate-x-1/2 bg-[#131417] text-white w-175 border-4 border-gray-600  h-2/3" >
-    <div class="mx-4  pt-4">
+  <div class="fixed md:translate-y-4/7 translate-y-1/2 left-1/2 -translate-x-1/2 md:h-4/5 h-full md:w-175 max-w-185 w-full pb-20 px-4">
+  <div  class=" flex flex-col rounded-sm  bg-[#131417] text-white border-4 border-gray-600 h-full w-full" >
+    <div class="mx-4 pt-4">
       <div class="flex justify-between">
         <span class="after:content-[''] after:border-b-2 after:border-green-400 after:absolute after:-bottom-0.5 after:left-0 after:w-full relative pb-1">Pen Settings</span>
         <button type="button" @click.prevent="emit('close')" class="right-1 bg-[#424655] w-7 flex justify-center h-4">
@@ -33,13 +34,15 @@ const activeTab = ref('html')
       </div>
         <div class="w-full h-0.5 bg-gray-600 mb-4"></div>
       </div>
-        <div class="flex h-full px-4">
-          <ul class="w-1/4">
-              <li v-for="tab in tabs" :key="tab.key" tabindex="0" @click.prevent="activeTab = tab.key"  class="transition hover:bg-gray-600 pl-4 relative -left-4 before:content-[''] before:absolute before:w-1 before:h-full before:left-0 focus:before:bg-green-500" :class="{ 'before:bg-green-500': activeTab === tab.key, 'mt-4': tab.gapBefore,  'bg-gray-600': activeTab === tab.key}">
-                {{  tab.label }}
-              </li>
+        <div class="md:flex h-full mx-4 block">
+          <ul class="md:w-1/4 flex md:flex-col overflow-scroll md:overflow-visible pl-2 md:pl-0">
+            <li v-for="tab in tabs" :key="tab.key" tabindex="0" @click.prevent="activeTab = tab.key"  class="whitespace-nowrap transition hover:bg-gray-600 px-1.5 md:pl-4 ml-1 md:ml-0 relative -left-4 before:content-none md:before:content-['']  before:absolute before:w-1 before:h-full before:left-0 focus:before:bg-green-500" :class="{ 'before:bg-green-500': activeTab === tab.key, 'md:mt-4': tab.gapBefore,  'bg-gray-600': activeTab === tab.key}">
+              {{  tab.label }}
+            </li>
           </ul>
-          <div  v-show="activeTab === 'html'" class="w-3/4 flex flex-col gap-4">
+          <div class="md:hidden w-full flex my-3 md:before:content-none before:content-[''] before:relative before:w-full before:h-0.5 before:bg-gray-700 before:mt-2"></div>
+
+          <div v-show="activeTab === 'html'" class="md:w-3/4 w-full flex flex-col gap-4">
             <div class="relative bg-linear-to-l from-[#252730] to-[#424655] py-3 px-4 w-full before:h-full before:w-1 before:bg-gray-500 before:content-[''] before:absolute before:top-0 before:left-0">
               <div class="">
                 <label for="HTML Preprocessor">HTML Preprocessor</label>
@@ -80,7 +83,8 @@ const activeTab = ref('html')
               </div>
             </div>
           </div>
-          <div v-show="activeTab === 'css'" class="w-3/4 flex flex-col gap-4">
+
+          <div v-show="activeTab === 'css'" class="md:w-3/4 w-full flex flex-col gap-4">
             <div class="relative bg-linear-to-l from-[#252730] to-[#424655] py-3 px-4 w-full before:h-full before:w-1 before:bg-gray-500 before:content-[''] before:absolute before:top-0 before:left-0">
               <div class="">
                 <label for="CSS Preprocessor">CSS Preprocessor</label>
@@ -139,7 +143,7 @@ const activeTab = ref('html')
               </div>
             </div>
           </div>
-          <div v-show="activeTab === 'detail'" class="w-3/4 flex flex-col gap-4">
+          <div v-show="activeTab === 'detail'" class="md:w-3/4 w-full flex flex-col gap-4">
             <div class="relative bg-linear-to-l from-[#252730] to-[#424655] py-3 px-4 w-full before:h-full before:w-1 before:bg-gray-500 before:content-[''] before:absolute before:top-0 before:left-0">
               <div class="">
                 <label for="CSS Preprocessor">CSS Preprocessor</label>
@@ -171,4 +175,6 @@ const activeTab = ref('html')
           <button type="submit" @click.prevent="emit('close')" class="self-end bg-green-400 text-black rounded-md p-3">Save & Close</button>
         </div>
       </div>
+  </div>
+
 </template>

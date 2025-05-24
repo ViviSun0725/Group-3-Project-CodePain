@@ -36,7 +36,7 @@
     parameterHints: { enabled: true },
   });
 
-  // 🔁 當 Monaco 編輯器內的 code 變動時，同步更新到 store
+  // 當 Monaco Editor內的 code 變動時，同步更新到 store
   watch(code, (newVal) => {
     emit('update:code', newVal)
   })

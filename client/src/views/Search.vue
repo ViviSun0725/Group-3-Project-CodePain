@@ -10,6 +10,7 @@ import RightArrowIcon from "@/components/icons/RightArrowIcon.vue";
 
 const route = useRoute();
 const router = useRouter();
+
 const inputKeyword = ref(""); // 使用者輸入的內容（v-model 綁定 input）
 const searchKeyword = ref(""); // 用來搜尋的關鍵字
 const itemsPerPage = 6;
