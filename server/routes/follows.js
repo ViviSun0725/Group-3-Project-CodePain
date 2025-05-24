@@ -1,68 +1,70 @@
 import { Router } from "express";
+import { eq, and } from "drizzle-orm";
 import db from "../db/index.js";
-import { commentsTable } from "../db/schema.js";
-import { eq } from "drizzle-orm";
+import { followsTable } from "../db/schema.js";
+import { requireAuth } from "../middleware/auth.js";
 
 const router = Router();
 
 /**
- * GET /api/comments/:pen_id
- * 查某個作品的所有留言
- */
-router.get("/:pen_id", async (req, res) => {
-  const pen_id = parseInt(req.params.pen_id);
-
-  const comments = await db
-    .select()
-    .from(commentsTable)
-    .where(eq(commentsTable.pen_id, pen_id));
-
-  res.json(comments);
-});
-
-/**
- * POST /api/comments
- * 新增留言
- * Body: { pen_id, user_id, content }
+ * POST /api/follows
+ * 追蹤某使用者
+ * Body: { following_id }
  */
 router.post("/", async (req, res) => {
-  const { pen_id, user_id, content } = req.body;
+  const { follower_id, following_id } = req.body;
 
-  const [newComment] = await db
-    .insert(commentsTable)
-    .values({ pen_id, user_id, content })
-    .returning();
+  if (follower_id === following_id) {
+    return res.status(400).json({ error: "不能追蹤自己！" });
+  }
 
-  res.status(201).json(newComment);
+  await db
+    .insert(followsTable)
+    .values({ follower_id, following_id })
+    .onConflictDoNothing();
+
+  res.status(201).json({ success: true });
 });
 
 /**
- * PUT /api/comments/:id
- * 編輯留言內容
+ * DELETE /api/follows
+ * 取消追蹤
+ * Body: { follower_id, following_id }
  */
-router.put("/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const { content } = req.body;
+router.delete("/", async (req, res) => {
+  const { follower_id, following_id } = req.body;
+
+  await db
+    .delete(followsTable)
+    .where(
+      and(
+        eq(followsTable.follower_id, follower_id),
+        eq(followsTable.following_id, following_id)
+      )
+    );
+
+  res.status(204).end();
+});
+
+/**
+ * GET /api/follows/check/:target_id
+ * 檢查目前登入者是否已追蹤某個使用者（供前端按鈕顯示）
+ */
+router.get("/check/:target_id", async (req, res) => {
+  const { follower_id } = req.body;
+  const following_id = parseInt(req.params.target_id);
 
   const result = await db
-    .update(commentsTable)
-    .set({ content })
-    .where(eq(commentsTable.id, id))
-    .returning();
+    .select()
+    .from(followsTable)
+    .where(
+      and(
+        eq(followsTable.follower_id, follower_id),
+        eq(followsTable.following_id, following_id)
+      )
+    );
 
-  if (result.length === 0) return res.status(404).json({ error: "找不到留言" });
-  res.json(result[0]);
-});
-
-/**
- * DELETE /api/comments/:id
- * 刪除留言
- */
-router.delete("/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
-
-  await db.delete(commentsTable).where(eq(commentsTable.id, id));
-  res.status(204).end();
+  res.json({ isFollowing: result.length > 0 });
 });
 
 export default router;
