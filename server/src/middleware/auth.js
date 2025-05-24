@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import db from "../db/index.js";
-import { usersTable } from "../db/schema.js";
+import db from "../config/db.js";
+import { usersTable } from "../models/schema.js";
 import { eq } from "drizzle-orm";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_default_secret";
@@ -19,7 +19,9 @@ export async function requireAuth(req, res, next) {
 
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-    const user = (await db.select().from(usersTable).where(eq(usersTable.id, payload.id)))[0];
+    const user = (
+      await db.select().from(usersTable).where(eq(usersTable.id, payload.id))
+    )[0];
     if (!user) return res.status(401).json({ error: "無效使用者" });
 
     // 將使用者資料掛到 req 上
@@ -27,7 +29,7 @@ export async function requireAuth(req, res, next) {
       id: user.id,
       email: user.email,
       username: user.username,
-      is_pro: user.is_pro
+      is_pro: user.is_pro,
     };
 
     next(); // 通過驗證，交給下一個處理函式

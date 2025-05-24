@@ -8,8 +8,8 @@
     "dev": "nodemon index.js",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
-    "seed": "node scripts/seed.js",
-    "seed:clean": "node scripts/seed.js --cleanup"
+    "seed": "node src/scripts/seed.js",
+    "seed:clean": "node src/scripts/seed.js --cleanup"
   },
   "keywords": [],
   "author": "",

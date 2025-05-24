@@ -1,10 +1,6 @@
 import { Router } from "express";
-import db from "../db/index.js";
-import {
-  usersTable,
-  pensTable,
-  followsTable
-} from "../db/schema.js";
+import db from "../config/db.js";
+import { usersTable, pensTable, followsTable } from "../models/schema.js";
 import { eq } from "drizzle-orm";
 
 const router = Router();
@@ -19,8 +15,9 @@ router.get("/:id", async (req, res) => {
     .select()
     .from(usersTable)
     .where(eq(usersTable.id, id));
-  
-  if (result.length === 0) return res.status(404).json({ error: "使用者不存在" });
+
+  if (result.length === 0)
+    return res.status(404).json({ error: "使用者不存在" });
 
   const { password_hash, ...userData } = result[0]; // 不回傳密碼
   res.json(userData);
@@ -40,7 +37,8 @@ router.put("/:id", async (req, res) => {
     .where(eq(usersTable.id, id))
     .returning();
 
-  if (result.length === 0) return res.status(404).json({ error: "使用者不存在" });
+  if (result.length === 0)
+    return res.status(404).json({ error: "使用者不存在" });
 
   const { password_hash, ...updatedUser } = result[0];
   res.json(updatedUser);
@@ -67,11 +65,11 @@ router.get("/:id/following", async (req, res) => {
   const id = parseInt(req.params.id);
   const follows = await db
     .select({
-      user_id: followsTable.following_id
+      user_id: followsTable.following_id,
     })
     .from(followsTable)
     .where(eq(followsTable.follower_id, id));
-  res.json(follows.map(f => f.user_id));
+  res.json(follows.map((f) => f.user_id));
 });
 
 /**
@@ -82,11 +80,11 @@ router.get("/:id/followers", async (req, res) => {
   const id = parseInt(req.params.id);
   const followers = await db
     .select({
-      user_id: followsTable.follower_id
+      user_id: followsTable.follower_id,
     })
     .from(followsTable)
     .where(eq(followsTable.following_id, id));
-  res.json(followers.map(f => f.user_id));
+  res.json(followers.map((f) => f.user_id));
 });
 
 export default router;

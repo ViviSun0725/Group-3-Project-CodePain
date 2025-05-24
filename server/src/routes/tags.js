@@ -1,6 +1,6 @@
 import { Router } from "express";
-import db from "../db/index.js";
-import { pensTable, tagsTable, penTagsTable } from "../db/schema.js";
+import db from "../config/db.js";
+import { pensTable, tagsTable, penTagsTable } from "../models/schema.js";
 import { eq, inArray } from "drizzle-orm";
 
 const router = Router();

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import db from "../db/index.js";
-import { usersTable } from "../db/schema.js";
+import db from "../config/db.js";
+import { usersTable } from "../models/schema.js";
 import { eq } from "drizzle-orm";
 
 const router = Router();

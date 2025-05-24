@@ -6,13 +6,13 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 
 
-import authRouter from "./routes/auth.js";
-import usersRouter from "./routes/users.js";
-import pensRouter from "./routes/pens.js";
-import tagsRouter from "./routes/tags.js";
-import favoritesRouter from "./routes/favorites.js";
-import commentsRouter from "./routes/comments.js";
-import followsRouter from "./routes/follows.js";
+import authRouter from "./src/routes/auth.js";
+import usersRouter from "./src/routes/users.js";
+import pensRouter from "./src/routes/pens.js";
+import tagsRouter from "./src/routes/tags.js";
+import favoritesRouter from "./src/routes/favorites.js";
+import commentsRouter from "./src/routes/comments.js";
+import followsRouter from "./src/routes/follows.js";
 
 const { Pool } = pg;
 dotenv.config();
