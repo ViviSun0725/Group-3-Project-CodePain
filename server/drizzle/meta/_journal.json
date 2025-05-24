@@ -22,6 +22,20 @@
       "when": 1747586597522,
       "tag": "0002_abnormal_franklin_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1747935287968,
+      "tag": "0003_swift_puma",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1747936864240,
+      "tag": "0004_nifty_jetstream",
+      "breakpoints": true
     }
   ]
 }

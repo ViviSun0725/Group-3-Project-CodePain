@@ -1,64 +1,68 @@
 import { Router } from "express";
 import db from "../db/index.js";
-import { favoritesTable, pensTable } from "../db/schema.js";
-import { eq, and } from "drizzle-orm";
-import { requireAuth } from "../middleware/auth.js";
+import { commentsTable } from "../db/schema.js";
+import { eq } from "drizzle-orm";
 
 const router = Router();
 
 /**
- * POST /api/favorites
- * 收藏一個作品
- * Body: { user_id, pen_id }
+ * GET /api/comments/:pen_id
+ * 查某個作品的所有留言
+ */
+router.get("/:pen_id", async (req, res) => {
+  const pen_id = parseInt(req.params.pen_id);
+
+  const comments = await db
+    .select()
+    .from(commentsTable)
+    .where(eq(commentsTable.pen_id, pen_id));
+
+  res.json(comments);
+});
+
+/**
+ * POST /api/comments
+ * 新增留言
+ * Body: { pen_id, user_id, content }
  */
 router.post("/", async (req, res) => {
-  const { user_id, pen_id } = req.body;
+  const { pen_id, user_id, content } = req.body;
 
-  try {
-    await db.insert(favoritesTable).values({ user_id, pen_id }).onConflictDoNothing();
-    res.status(201).json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: "收藏失敗", details: err.message });
-  }
+  const [newComment] = await db
+    .insert(commentsTable)
+    .values({ pen_id, user_id, content })
+    .returning();
+
+  res.status(201).json(newComment);
 });
 
 /**
- * DELETE /api/favorites
- * 取消收藏
- * Body: { user_id, pen_id }
+ * PUT /api/comments/:id
+ * 編輯留言內容
  */
-router.delete("/", async (req, res) => {
-  const { user_id, pen_id } = req.body;
-
-  await db.delete(favoritesTable).where(
-    and(eq(favoritesTable.user_id, user_id), eq(favoritesTable.pen_id, pen_id))
-  );
-
-  res.status(204).end();
-});
-
-/**
- * GET /api/favorites/:user_id
- * 取得某使用者的所有收藏作品
- */
-router.get("/:user_id", async (req, res) => {
-  const user_id = parseInt(req.params.user_id);
+router.put("/:id", async (req, res) => {
+  const id = parseInt(req.params.id);
+  const { content } = req.body;
 
   const result = await db
-    .select({
-      pen_id: favoritesTable.pen_id
-    })
-    .from(favoritesTable)
-    .where(eq(favoritesTable.user_id, user_id));
+    .update(commentsTable)
+    .set({ content })
+    .where(eq(commentsTable.id, id))
+    .returning();
 
-  const penIds = result.map(r => r.pen_id);
+  if (result.length === 0) return res.status(404).json({ error: "找不到留言" });
+  res.json(result[0]);
+});
 
-  const pens = await db
-    .select()
-    .from(pensTable)
-    .where(pensTable.id.in(penIds));
+/**
+ * DELETE /api/comments/:id
+ * 刪除留言
+ */
+router.delete("/:id", async (req, res) => {
+  const id = parseInt(req.params.id);
 
-  res.json(pens);
+  await db.delete(commentsTable).where(eq(commentsTable.id, id));
+  res.status(204).end();
 });
 
 export default router;

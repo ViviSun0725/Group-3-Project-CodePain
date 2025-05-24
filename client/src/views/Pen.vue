@@ -1,7 +1,7 @@
 <script setup>
+
 	import { provide, ref, onMounted, onUnmounted, watch } from 'vue';
   import { defineStore } from 'pinia'
-
   import Icon from '../assets/icon.svg';
   import Edit from '../assets/edit.svg';
   import Like from '../assets/like.svg';
@@ -18,6 +18,14 @@
   import EditorSmallButton from '../components/Editor/EditorSmallButton.vue';
   import Editor from '@/components/Editor/Editor.vue';
 
+  import { storeToRefs } from 'pinia'
+  import { useWorkStore } from '@/stores/workStore';
+
+  const workStore = useWorkStore()
+  const { updateCurrentCode }= workStore;
+  const { currentWork } = storeToRefs(workStore);
+  const { html, css, javascript } = currentWork.value[0]
+	
 	const isLoggedIn = ref(false);
   const isConsoleDragging = ref(false);
   const consoleHeight = ref(200);  // 預設高度 px
@@ -73,7 +81,7 @@
   const saveOptionVisible = ref(false);
   const layoutOptionVisible = ref(false);
   const bookmarkVisible = ref(false);
-  const title = ref('Title');
+  const title = ref("TITLE");
   const isEditing = ref(false);
   const settingOptionVisible = ref(false);
   const isConsoleShow = ref(false);
@@ -257,15 +265,15 @@
   }
 
   watch(isConsoleShow, (show) => {
-  if (show && selectedLayout.value.id === 'center') {
-    const mainHeight = mainRef.value?.getBoundingClientRect().height || window.innerHeight
-    const maxEditorHeight = mainHeight - 36 - 16  // console 高度預留
+    if (show && selectedLayout.value.id === 'center') {
+      const mainHeight = mainRef.value?.getBoundingClientRect().height || window.innerHeight
+      const maxEditorHeight = mainHeight - 36 - 16  // console 高度預留
 
-    if (editorWrapperSize.value > maxEditorHeight) {
-      editorWrapperSize.value = maxEditorHeight
+      if (editorWrapperSize.value > maxEditorHeight) {
+        editorWrapperSize.value = maxEditorHeight
+      }
     }
-  }
-})
+  })
 
   onMounted(() => {
     window.addEventListener('pointermove', handleConsoleDrag)
@@ -288,6 +296,10 @@
     window.removeEventListener('pointermove', handleColumnDrag)
     window.removeEventListener('pointerup', stopColumnDrag)
   })
+
+  const updateCode = (language, newCode) => {
+    updateCurrentCode(language, newCode);
+  }
 </script>
 
 <template>
@@ -482,7 +494,7 @@
               </EditorSmallButton>
             </div>
           </div>
-          <Editor/>
+          <Editor :language="'html'" :code="html" @update:code="newCode => updateCode('html', newCode)"/>
         </div>
 
         <div
@@ -490,7 +502,6 @@
           :class="selectedLayout.id === 'center' ? 'w-4 cursor-col-resize border-x' : 'h-4 cursor-row-resize border-y'"
           @pointerdown="(e) => startColumnDrag(0, e.currentTarget)"
         ></div>
-
 
         <div :style="{ flexBasis: sizes[1] + '%', minWidth: '0px' }" class="relative">
           <div class="flex justify-between items-center min-w-3xs overflow-hidden editor-bgc">
@@ -509,7 +520,7 @@
               </EditorSmallButton>
             </div>
           </div>
-          <Editor/>
+          <Editor :language="'css'" :code="css" @update:code="newCode => updateCode('css', newCode)"/>
         </div>
 
         <div
@@ -517,7 +528,6 @@
           :class="selectedLayout.id === 'center' ? 'w-4 cursor-col-resize border-x' : 'h-4 cursor-row-resize border-y'"
           @pointerdown="(e) => startColumnDrag(1, e.currentTarget)"
         ></div>
-
 
         <div :style="{ flexBasis: sizes[2] + '%', minWidth: '0px' }" class="relative">
           <div class="flex justify-between items-center min-w-3xs overflow-hidden editor-bgc">
@@ -536,7 +546,7 @@
               </EditorSmallButton>
             </div>
           </div>
-          <Editor/>
+          <Editor :language="'javascript'" :code="javascript" @update:code="newCode => updateCode('javascript', newCode)"/>
         </div>
 
       </div>

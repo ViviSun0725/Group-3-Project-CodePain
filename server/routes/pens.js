@@ -112,6 +112,7 @@ router.put("/:id", async (req, res) => {
  */
 router.delete("/:id", async (req, res) => {
   const id = parseInt(req.params.id);
+
   await db.delete(pensTable).where(eq(pensTable.id, id));
   res.status(204).end();
 });
