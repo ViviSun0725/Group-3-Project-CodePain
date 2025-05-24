@@ -13,13 +13,15 @@ import {
 
 // 使用者資料表
 const usersTable = pgTable("users", {
-  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  // id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  id: varchar("id", { length: 1000 }).primaryKey(),  // 欄位名稱依然是叫id
   email: varchar("email", { length: 255 }).notNull().unique(),
   username: varchar("username", { length: 50 }).notNull(),
   password_hash: text("password_hash").notNull(),
   is_pro: boolean("is_pro").default(false),
   profile_image: text("profile_image"), // 存網址
   display_name: varchar("display_name", { length: 100 }),
+  location: varchar("location", { length: 255 }),
   bio: text("bio"),
   profile_link1: text("profile_link1"),
   profile_link2: text("profile_link2"),
