@@ -11,6 +11,10 @@
   color: #b2b8c5;
 }
 
+.editorSettingCard-linear-bgc {
+  @apply bg-gradient-to-l from-[#252730] to-[#424655];
+}
+
 .editorSmallButton-hover-bgc:hover {
   background-color: #5a5f73;
 }

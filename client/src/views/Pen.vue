@@ -1,20 +1,20 @@
 <script setup>
-	import { provide, ref, onMounted, onUnmounted, watch, computed } from 'vue';
+
+	import { provide, ref, onMounted, onUnmounted, watch } from 'vue';
+  import { defineStore } from 'pinia'
   import Icon from '../assets/icon.svg';
   import Edit from '../assets/edit.svg';
   import Like from '../assets/like.svg';
   import Cloud from '../assets/cloud.svg';
   import Arrow from '../assets/arrow.svg';
-  import WhiteArrow from '../assets/arrow-white.svg';
+  import ArrowWhite from '../assets/arrow-white.svg';
   import Settings from '../assets/settings.svg';
   import Layout from '../assets/layout.svg';
-  import Bookmark from '../assets/bookmark.svg';
+  import penSetting from '../components/Editor/penSetting.vue';
   import Close from '../assets/close.svg';
   import HTMLIcon from '../assets/html.svg';
   import CSSIcon from '../assets/css.svg';
   import JSIcon from '../assets/js.svg';
-
-  import penSetting from '../components/penSetting.vue';
   import EditorSmallButton from '../components/Editor/EditorSmallButton.vue';
   import Editor from '@/components/Editor/Editor.vue';
 
@@ -26,7 +26,58 @@
   const { currentWork } = storeToRefs(workStore);
   const { html, css, javascript } = currentWork.value[0]
 	
-	const isLoggedIn = ref(true);
+	const isLoggedIn = ref(false);
+  const isConsoleDragging = ref(false);
+  const consoleHeight = ref(200);  // 預設高度 px
+  const previewContainer = ref(null);
+  const navListVisible = ref(false);
+
+
+
+
+  const startConsoleDragging = () => {
+    isConsoleDragging.value = true
+    document.body.classList.add('select-none')
+  };
+
+  const stopConsoleDragging = () => {
+    if (isConsoleDragging.value) {
+      isConsoleDragging.value = false;
+      document.body.classList.remove('select-none');
+    }
+  };
+
+  const handleConsoleMouseMove = (e) => {
+    if (!isConsoleDragging.value || !previewContainer.value) return;
+
+    const containerHeight = previewContainer.value.clientHeight;
+    const rect = previewContainer.value.getBoundingClientRect();
+    const offsetY = e.clientY - rect.top;
+    const newHeight = containerHeight - offsetY;
+
+    const minHeight = 0;
+    const maxHeight = containerHeight;
+
+    if (newHeight >= minHeight && newHeight <= maxHeight) {
+      consoleHeight.value = newHeight;
+    } else if (newHeight < minHeight) {
+      consoleHeight.value = minHeight;
+    } else if (newHeight > maxHeight) {
+      consoleHeight.value = maxHeight;
+    }
+  };
+
+
+  onMounted(() => {
+    window.addEventListener('pointermove', handleConsoleMouseMove);
+    window.addEventListener('pointerup', stopConsoleDragging);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('pointermove', handleConsoleMouseMove);
+    window.removeEventListener('pointerup', stopConsoleDragging);
+  });
+
   const saveOptionVisible = ref(false);
   const layoutOptionVisible = ref(false);
   const bookmarkVisible = ref(false);
@@ -53,9 +104,10 @@
   const toggleSetting = () => {
     settingOptionVisible.value = !settingOptionVisible.value
   };
-  const toggleBookmark = () => {
-    bookmarkVisible.value = !bookmarkVisible.value
+  const toggleList = () => {
+    navListVisible.value = !navListVisible.value
   };
+
 
   const layoutOptions = [
     { id: 'left', rotation: -90, display: 'flex-row'},
@@ -87,9 +139,7 @@
   const isDraggingConsole = ref(false)
   const isDraggingColumn = ref(false)
 
-  const consoleHeight = ref(200)
   const editorWrapperSize = ref(300)
-  const previewContainer = ref(null)
 
   const sizes = ref([33.3, 33.3, 33.4])
   const currentColumnIndex = ref(null)
@@ -254,7 +304,7 @@
 
 <template>
   <div class="flex flex-col h-dvh">
-    <nav class="relative h-[65px] w-full bg-black flex items-center justify-between">
+    <nav class="relative md:h-16 h-14 w-full bg-black flex items-center justify-between">
       <div class="flex items-center ml-2">
         <a href="/" class="flex text-0 ">
           <img :src="Icon" alt="" class=" w-9 mb-2 ml-1 mr-2 ">
@@ -276,25 +326,25 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-3 mr-3">
-        <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded px-5 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer">
+      <div class="flex items-center gap-2 mr-3">
+        <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded px-3 md:px-5 py-1 md:py-2 bg-[#444857] editorSmallButton-hover-bgc  hover:cursor-pointer">
           <div class="h-7 flex">
-            <img :src="Like" alt="" class="w-[16px]">
+            <img :src="Like" alt="" class="w-4">
           </div>
         </button>
-        <div class="flex">
-          <button type="button" class="text-[aliceblue] rounded-l px-5 py-2 bg-[#444857] mr-[1px] hover:bg-[#5A5F73] hover:cursor-pointer"
-            :class="{ 'rounded mr-[10px]': !isLoggedIn }">
+        <div class="md:flex hidden">
+          <button type="button" class="text-[aliceblue] rounded-l px-5 py-2 bg-[#444857] mr-[1px] editorSmallButton-hover-bgc  hover:cursor-pointer"
+            :class="{ 'rounded mr-[2px]': !isLoggedIn }">
             <div class="h-7 flex items-center gap-1">
-              <img :src="Cloud" alt="" class="w-[16px]">
+              <img :src="Cloud" alt="" class="w-4">
               <span>Save</span>
             </div>
           </button>
           <div class="relative ">
             <button v-if="isLoggedIn" @click.prevent="toggleSave" type="button"
-              class="relative text-[aliceblue] rounded-r  py-2 bg-[#444857] flex justify-center items-center w-5 hover:bg-[#5A5F73] hover:cursor-pointer">
+              class="relative text-[aliceblue] rounded-r  py-2 bg-[#444857] flex justify-center items-center w-5 editorSmallButton-hover-bgc  hover:cursor-pointer">
               <div class="h-7 flex justify-center items-center">
-                <img :src="Arrow" alt="" class="w-[10px]">
+                <img :src="Arrow" alt="" class="w-2.5">
               </div>
             </button>
             <div v-if="saveOptionVisible" class="fixed inset-0 transition-opacity duration-200" @click="toggleSave"></div>
@@ -337,17 +387,35 @@
             </ul>
           </div>
         </div>
-        <button @click.prevent="toggleSetting" type="button" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer" >
+        <div v-if="navListVisible" class="fixed inset-0 z-40 transition-opacity duration-200" @click="toggleList"></div>
+        <button @click.prevent="toggleList" type="button" class="flex md:hidden text-[aliceblue] rounded px-2 py-1 bg-[#444857] editorSmallButton-hover-bgc  hover:cursor-pointer" >
+          <div class="h-7 flex justify-between w-6 items-center">
+            <div class="transition-transform h-0.5 bg-gray-200 relative before:content-[''] before:w-1.5 before:h-0.5 before:bg-gray-200 before:absolute before:-top-1.5 before:left-0 after:content-[''] after:w-3.5 after:h-0.5 after:bg-gray-200 after:absolute after:-bottom-1.5 after:left-0" :class="navListVisible ? 'before:w-2 w-1.5' : 'before:w-1.5 w-2.5'"></div>
+            <img :src="ArrowWhite" alt="" class=" transition-transform	w-3 self-start mt-1.5 " :class=" {'scale-y-[-1]':navListVisible}">
+          </div>
+        </button>
+        <div v-if="navListVisible" class="z-50 absolute flex flex-col top-14 right-0 w-55 gap-1 py-1 bg-[#1E1F26] rounded-sm">
+          <button class="flex w-full px-2 py-1 hover:bg-gray-500">
+            <img :src="Cloud" alt="" class="w-4">
+            <span>Save</span>
+          </button>
+          <button @click.prevent="toggleSetting" class="flex w-full px-2 py-1 hover:bg-gray-500">
+            <img :src="Settings" alt="" class="w-4">
+            <span>Settings</span>
+          </button>
+          <div class="w-full bg-gray-700 h-[1px] mb-4"></div>
+        </div>
+        <button @click.prevent="toggleSetting" type="button" class="hidden md:flex text-[aliceblue] rounded px-4 py-2 bg-[#444857] editorSmallButton-hover-bgc  hover:cursor-pointer" >
           <div class="h-7 flex items-center gap-1">
-            <img :src="Settings" alt="" class="w-[16px]">
+            <img :src="Settings" alt="" class="w-4">
             <span>Settings</span>
           </div>
         </button>
         <div v-if="settingOptionVisible" class="fixed inset-0 bg-black/50 z-40 transition-opacity duration-200" @click="toggleSetting"></div>
         <penSetting v-if="settingOptionVisible"  @close="toggleSetting" class="z-50" />
 
-        <div class="relative">
-          <button type="button" @click.prevent="toggleLayout" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:bg-[#5A5F73] hover:cursor-pointer">
+        <div class="relative md:flex hidden">
+          <button type="button" @click.prevent="toggleLayout" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] editorSmallButton-hover-bgc  hover:cursor-pointer">
             <div class="h-7 flex items-center gap-1">
               <img :src="Layout" alt="" class="w-[14px]" :style="{ transform: `rotate(${selectedLayout.rotation}deg)` }">
             </div>
@@ -360,7 +428,7 @@
             <div class="flex justify-center align-middle py-3">
               <div class="flex justify-center align-middle py-3 ">
                 <label
-                  v-for="option in layoutOptions" :key="option.id" class="border-2 border-[#444857] w-20 flex justify-center h-12 hover:bg-[#5A5F73]  hover:cursor-pointer" :class="{ 'rounded-l-sm': option.id === 'left', 'rounded-r-sm': option.id === 'right', 'bg-[#444857]': selectedLayout.id === option.id }"
+                  v-for="option in layoutOptions" :key="option.id" class="border-2 border-[#444857] w-20 flex justify-center h-12 editorSmallButton-hover-bgc   hover:cursor-pointer" :class="{ 'rounded-l-sm': option.id === 'left', 'rounded-r-sm': option.id === 'right', 'bg-[#444857]': selectedLayout.id === option.id }"
                 >
                   <button @click="selectLayout(option) " class=" hover:cursor-pointer">
                     <img :src="Layout" :style="{ transform: `rotate(${option.rotation}deg)` }" class="w-5 "  alt="">
@@ -379,39 +447,17 @@
           </div>
         </div>
 
-        <div class="flex">
-          <button v-if="isLoggedIn" type="button" class="text-[aliceblue] rounded-l px-4 py-2 bg-[#444857] mr-[1px] hover:bg-[#5A5F73] hover:cursor-pointer">
-            <div class="h-7 flex items-center gap-1">
-              <img :src="Bookmark" alt="" class="w-[12px]">
-            </div>
-          </button>
-          <button
-            v-if="isLoggedIn" @click.prevent="toggleBookmark" type="button"
-            class="text-[aliceblue] rounded-r py-2 bg-[#444857] flex justify-center items-center w-5 hover:bg-[#5A5F73] hover:cursor-pointer"
-          >
-            <div class="h-7 flex justify-center items-center">
-              <img :src="Arrow" alt="" class="w-[10px]">
-            </div>
-          </button>
-          <div v-if="bookmarkVisible" class="fixed inset-0 transition-opacity duration-200" @click="toggleBookmark"></div>
-
-          <ul
-            v-if="bookmarkVisible" class="absolute z-50 flex flex-col rounded-sm top-30 left-1/2 -translate-x-1/2 bg-[#2C303A] text-white w-175 h-49 justify-between"
-          >
-          </ul>
-        </div>
-
-        <button v-if="!isLoggedIn" type="button" class="text-black rounded px-4 py-2 bg-[#47cf73] hover:cursor-pointer">
+        <button v-if="!isLoggedIn" type="button" class="text-black rounded px-2 py-1 md:px-4 md:py-2 bg-[#47cf73] hover:cursor-pointer">
           <div class="h-7 flex items-center gap-1">
             <span>Sign Up</span>
           </div>
         </button>
-        <button v-if="!isLoggedIn" type="button" class="text-[aliceblue] rounded px-4 py-2 bg-[#444857] hover:cursor-pointer">
+        <button v-if="!isLoggedIn" type="button" class="text-[aliceblue] rounded px-2 py-1 md:px-4 md:py-2 bg-[#444857] hover:cursor-pointer">
           <div class="h-7 flex items-center gap-1">
             <span>Log In</span>
           </div>
         </button>
-        <div v-if="isLoggedIn" class="w-[44px] h-[44px] overflow-hidden mx-1 rounded hover:cursor-pointer">
+        <div v-if="isLoggedIn" class="w-9 h-9 md:w-11 md:h-11 overflow-hidden mx-1 rounded hover:cursor-pointer">
           <img src="https://fakeimg.pl/300x200/500" class="w-full h-full object-cover" />
         </div>
       </div>
@@ -441,10 +487,10 @@
             </h2>
             <div class="h-full flex items-center gap-2 px-3">
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="Settings" alt="setting button" class="w-[10px] h-[10px]">
+                <img :src="Settings" alt="setting button" class="w-2.5 h-2.5">
               </EditorSmallButton>
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="WhiteArrow" alt="other button" class="w-[10px] h-[10px]">
+                <img :src="ArrowWhite" alt="other button" class="w-2.5 h-2.5">
               </EditorSmallButton>
             </div>
           </div>
@@ -467,10 +513,10 @@
             </h2>
             <div class="h-full flex items-center gap-2 px-3">
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="Settings" alt="setting button" class="w-[10px] h-[10px]">
+                <img :src="Settings" alt="setting button" class="w-2.5 h-2.5">
               </EditorSmallButton>
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="WhiteArrow" alt="other button" class="w-[10px] h-[10px]">
+                <img :src="ArrowWhite" alt="other button" class="w-2.5 h-2.5">
               </EditorSmallButton>
             </div>
           </div>
@@ -493,10 +539,10 @@
             </h2>
             <div class="h-full flex items-center gap-2 px-3">
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="Settings" alt="setting button" class="w-[10px] h-[10px]">
+                <img :src="Settings" alt="setting button" class="w-2.5 h-2.5">
               </EditorSmallButton>
               <EditorSmallButton class="editorSmallButton-hover-bgc">
-                <img :src="WhiteArrow" alt="other button" class="w-[10px] h-[10px]">
+                <img :src="ArrowWhite" alt="other button" class="w-2.5 h-2.5">
               </EditorSmallButton>
             </div>
           </div>
@@ -527,7 +573,7 @@
             <div class="flex gap-1">
               <EditorSmallButton class="editorSmallButton-hover-bgc">Clear</EditorSmallButton>
               <EditorSmallButton class="editorSmallButton-hover-bgc" @buttonClick="handleConsoleClose">
-                <img :src="Close" alt="close button" class="w-[10px] h-[10px]">
+                <img :src="Close" alt="close button" class="w-2.5 h-2.5">
               </EditorSmallButton>
             </div>
           </div>
