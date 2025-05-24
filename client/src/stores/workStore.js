@@ -67,10 +67,85 @@ export const useWorkStore = defineStore('work', () => {
     currentWork.value[0][language] = newCode
   }
 
-  return { currentWork, currentId, handleCurrentIdChange, updateCurrentCode }
+  // 開關自動更新狀態
+  const toggleAutoPreview = () => {
+    console.log(currentWork.value[0].isAutoPreview);
+    currentWork.value[0].isAutoPreview = !currentWork.value[0].isAutoPreview
+  }
+
+  // 更新作品Preview function
+  // const updatedPreview = ref('');
+  const iframeMessage = ref('');
+  const updatePreviewSrc = () => {
+    console.log()
+    return `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <style>${currentWork.value[0].css}</style>
+      </head>
+      <body>
+        ${currentWork.value[0].html}
+        <script>
+          const originalLog = console.log;
+          const originalError = console.error;
+          const originalWarn = console.warn;
+
+          // 覆寫 console 方法，將輸出傳回父頁面
+          ['log', 'error', 'warn'].forEach(method => {
+            console[method] = (...args) => {
+              window.parent.postMessage({
+                type: 'log',
+                message: args.map(arg =>
+                  typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+                ).join(' '),
+                level: method
+              }, '*');
+              originalLog(...args);
+            };
+          });
+
+          // 設置執行超時機制
+          const timeout = setTimeout(() => {
+            window.parent.postMessage({
+              type: 'log',
+              message: '執行超時，程式碼停止。',
+              level: 'error'
+            }, '*');
+            throw new Error('程式碼執行超時');
+          }, 5000); // 設定5秒為超時時間（可以根據需要調整）
+
+          try {
+            const userCode = ${JSON.stringify(currentWork.value[0].javascript)};
+            const customConsole = console;
+            const func = new Function('console', userCode);
+            func(customConsole);
+          } catch (err) {
+            window.parent.postMessage({
+              type: 'log',
+              message: err.stack || err.message || String(err),
+              level: 'error'
+            }, '*');
+          } finally {
+            clearTimeout(timeout); // 如果程式碼正常結束，清除超時計時器
+          }
+        <\/script>
+      </body>
+      </html>
+    `
+  }
+
+  return { 
+    currentWork,
+    currentId,
+    handleCurrentIdChange,
+    updateCurrentCode,
+    toggleAutoPreview,
+    updatePreviewSrc
+  }
 })
   
-
+  
 
   // todo:
   // fetch取得作品function 未來的works資料取得

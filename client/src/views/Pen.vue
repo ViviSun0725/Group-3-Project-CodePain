@@ -1,7 +1,5 @@
 <script setup>
-
-	import { provide, ref, onMounted, onUnmounted, watch } from 'vue';
-  import { defineStore } from 'pinia'
+	import { provide, ref, onMounted, onUnmounted, watch, toRefs } from 'vue';
   import Icon from '../assets/icon.svg';
   import Edit from '../assets/edit.svg';
   import Like from '../assets/like.svg';
@@ -17,6 +15,7 @@
   import JSIcon from '../assets/js.svg';
   import EditorSmallButton from '../components/Editor/EditorSmallButton.vue';
   import Editor from '@/components/Editor/Editor.vue';
+  import EditorPreview from '@/components/Editor/EditorPreview.vue';
 
   import { storeToRefs } from 'pinia'
   import { useWorkStore } from '@/stores/workStore';
@@ -24,7 +23,7 @@
   const workStore = useWorkStore()
   const { updateCurrentCode }= workStore;
   const { currentWork } = storeToRefs(workStore);
-  const { html, css, javascript } = currentWork.value[0]
+  const { html, css, javascript, isAutoPreview } = toRefs(currentWork.value[0])
 	
 	const isLoggedIn = ref(false);
   const isConsoleDragging = ref(false);
@@ -557,8 +556,9 @@
       ></div>
       <!-- preview -->
       <div class="flex-1 overflow-hidden flex flex-col bg-white" ref="previewContainer">
-        <div class="overflow-auto flex-1">
+        <div class="overflow-auto flex-none">
           <!-- Preview iframe -->
+          <EditorPreview :html="html" :css="css" :javascript="javascript" :isAutoPreview="isAutoPreview" class="shrink min-w-0 min-h-0"/>
         </div>
         <div v-show="isConsoleShow">
           <div
@@ -581,6 +581,7 @@
             class="h-16 editor-bgc"
             :style="{ height: `${consoleHeight}px` }"
           >
+          
           </div>
         </div>
         
