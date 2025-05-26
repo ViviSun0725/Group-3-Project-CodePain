@@ -18,12 +18,8 @@
           target="_blank"
           class="absolute top-2 right-2 bg-black/50 rounded p-1 opacity-0 group-hover:opacity-100 transition"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-4 h-4 text-white"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <!-- 靜態外部連結 icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
             <path d="M6 18V6h12v12H6zm0-2h12V8H6v8zm-2 4V4h16v16H4z" />
           </svg>
         </a>
@@ -32,73 +28,71 @@
       <!-- 卡片內容 -->
       <div class="p-4">
         <div class="flex items-center justify-between w-full">
-          <!-- 左：頭像與資訊 -->
+          <!-- 頭像與資訊 -->
           <div class="flex items-center gap-3">
             <a :href="authorLink" target="_blank">
               <img :src="authorAvatar" class="w-10 h-10 rounded-full shrink-0" alt="Avatar" />
             </a>
             <div>
-              <a :href="editorLink" target="_blank" class="block font-bold text-base text-white">
-                {{ title }}
-              </a>
+              <a :href="editorLink" target="_blank" class="block font-bold text-base text-white">{{ title }}</a>
               <a :href="authorLink" target="_blank" class="block text-sm text-gray-300 hover:underline">
                 <span class="font-medium">{{ author }}</span>
                 <span class="text-xs text-gray-400">{{ authorNote }}</span>
               </a>
             </div>
           </div>
-          <!-- PRO 與操作選單 -->
+
+          <!-- PRO 與選單 -->
           <div class="flex items-center gap-2">
-            <a
-              :href="proLink"
-              target="_blank"
-              class="inline-block bg-yellow-400 text-black text-[10px] font-bold px-1.5 py-[1px] rounded hover:bg-yellow-300 transition"
-            >
+            <a :href="proLink" target="_blank" class="inline-block bg-yellow-400 text-black text-[10px] font-bold px-1.5 py-[1px] rounded hover:bg-yellow-300 transition">
               PRO
             </a>
             <div class="relative">
-              <button
-                class="text-white text-xl font-bold hover:text-gray-300"
-                @click="menuOpen = !menuOpen"
-              >
-                •••
-              </button>
+              <button class="text-white text-xl font-bold hover:text-gray-300" @click="menuOpen = !menuOpen">•••</button>
               <div
                 v-if="menuOpen"
                 class="absolute right-0 mt-2 w-48 bg-[#2b2c36] text-sm rounded shadow-lg z-50 overflow-hidden border border-gray-700"
               >
-                <a href="#" class="block px-4 py-2 hover:bg-[#3a3b47]">📁 Add to Collection</a>
-                <a href="#" class="block px-4 py-2 hover:bg-[#3a3b47]">🔖 Add to Bookmarks</a>
-                <a href="#" class="block px-4 py-2 hover:bg-[#3a3b47] text-blue-400">
-                  ✅ Follow {{ authorHandle }}
+                <a href="#" class="block px-4 py-2 hover:bg-[#3a3b47] flex items-center gap-2">
+                  <FolderIcon /> Add to Collection
+                </a>
+                <a href="#" class="block px-4 py-2 hover:bg-[#3a3b47] flex items-center gap-2">
+                  <CollectIcon /> Add to Bookmarks
+                </a>
+                <a href="#" class="block px-4 py-2 hover:bg-[#3a3b47] text-blue-400 flex items-center gap-2">
+                  <FollowIcon /> Follow {{ authorHandle }}
                 </a>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 底部統計按鈕 -->
+        <!-- 底部統計 -->
         <div class="flex gap-2 mt-3">
           <button
             @click="liked = !liked"
             class="flex items-center gap-1 bg-[#4b4c5c] text-white px-3 py-[2px] rounded-lg font-medium text-sm transition select-none"
           >
             <span :class="liked ? 'text-pink-400' : 'text-white'">
-              {{ liked ? '♥' : '♡' }}
+              <LoveIcon :filled="liked" />
             </span>
             <span>{{ liked ? likes + 1 : likes }}</span>
           </button>
+
           <button
             @click="goToDetailPage"
             class="flex items-center gap-1 bg-[#2d2d38] text-white hover:bg-[#3a3b47] px-3 py-[2px] rounded-lg font-medium text-sm"
           >
-            💬 <span>{{ comments }}</span>
+            <CommentIcon />
+            <span>{{ comments }}</span>
           </button>
+
           <button
             @click="goToAnalyticsPage"
             class="flex items-center gap-1 bg-[#2d2d38] text-white hover:bg-[#3a3b47] px-3 py-[2px] rounded-lg font-medium text-sm"
           >
-            👁 <span>{{ views }}</span>
+            <ViewIcon />
+            <span>{{ views }}</span>
           </button>
         </div>
       </div>
@@ -109,13 +103,21 @@
 <script setup>
 import { ref } from 'vue'
 
+// ✅ 引入 Icon 元件
+import CollectIcon from '@/components/Editor/icons/CollectIcon.vue'
+import CommentIcon from '@/components/Editor/icons/CommentIcon.vue'
+import FolderIcon from '@/components/Editor/icons/FolderIcon.vue'
+import FollowIcon from '@/components/Editor/icons/FollowIcon.vue'
+import LoveIcon from '@/components/Editor/icons/LoveIcon.vue'
+import ViewIcon from '@/components/Editor/icons/ViewIcon.vue'
+
 const fallbackImage = 'https://via.placeholder.com/600x400?text=No+Preview'
 const imageUrl = ref('https://picsum.photos/600/400')
 const externalLink = 'https://codepen.io/simeydotme/pen/gObXYZo'
 const editorLink = 'https://codepen.io/simeydotme/pen/gObXYZo'
-const authorLink = '#' // 假資料
+const authorLink = '#'
 const authorAvatar = 'https://assets.codepen.io/123/internal/avatars/users/default.png'
-const proLink = 'PRO 的購買頁面' 
+const proLink = 'PRO 的購買頁面'
 const title = 'RC_mob_5-21'
 const author = 'Sophia'
 const authorNote = '(fractal kitty) (she/her)'
